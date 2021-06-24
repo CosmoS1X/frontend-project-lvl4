@@ -1,0 +1,24 @@
+.header {
+  margin-top: .5rem;
+  padding-left: 10px;
+}
+
+.header ul li {
+  list-style: none;
+  margin: 0;
+  padding: .5rem 1rem;
+  border-radius: 3px;
+}
+
+.header h3 a {
+  color: black;
+}
+
+.header a {
+  text-decoration: none;
+  color: black;
+}
+
+.header a:hover {
+  color: green;
+}
