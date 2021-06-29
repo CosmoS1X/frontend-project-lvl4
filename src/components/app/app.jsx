@@ -10,7 +10,14 @@ import Header from '../header';
 import authContext from '../../contexts';
 
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const userId = JSON.parse(localStorage.getItem('userId'));
+  const [loggedIn, setLoggedIn] = useState(() => {
+    if (userId && userId.token) {
+      return true;
+    }
+
+    return false;
+  });
 
   const logIn = () => setLoggedIn(true);
   const logOut = () => {
