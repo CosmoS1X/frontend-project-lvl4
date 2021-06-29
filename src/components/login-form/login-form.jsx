@@ -1,52 +1,81 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
-import { Formik, Form, useField } from 'formik';
+import React, { useEffect, useRef, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useFormik } from 'formik';
+import { Button, Form } from 'react-bootstrap';
+import axios from 'axios';
+import routes from '../../routes.js';
+import useAuth from '../../hooks';
 
-const MyTextInput = ({ label, ...props }) => {
-  const [field, meta] = useField(props);
+const LoginForm = () => {
+  const inputRef = useRef();
+  const auth = useAuth();
+  const history = useHistory();
+  const [authFailed, setAuthFailed] = useState(false);
 
-  return (
-    <>
-      <label htmlFor={props.id || props.name}>{label}</label>
-      <input className="form-control" {...field} {...props} />
-      {meta.touched && meta.error ? (
-        <div className="error">{meta.error}</div>
-      ) : null}
-    </>
-  );
-};
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
-const LoginForm = () => (
-  <Formik
-    initialValues={{
+  const formik = useFormik({
+    initialValues: {
       username: '',
       password: '',
-    }}
-    onSubmit={() => console.log('Submited')}
-  >
-    <Form className="col-12 col-md-6 mt-3 mt-mb-0">
+    },
+    onSubmit: async (values) => {
+      setAuthFailed(false);
+      try {
+        const response = await axios.post(routes.loginPath(), values);
+        localStorage.setItem('userId', JSON.stringify(response.data));
+        auth.logIn();
+        history.push('/');
+      } catch (err) {
+        if (err.isAxiosError && err.response.status === 401) {
+          setAuthFailed(true);
+          return;
+        }
+        throw err;
+      }
+    },
+  });
+
+  return (
+    <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
       <h1 className="text-center mb-4">Войти</h1>
-      <div className="form-floating mb-3 form-group">
-        <MyTextInput
-          label="Ваш ник"
-          name="username"
-          required
-          id="username"
+      <Form.Group className="form-floating mb-3">
+        <Form.Control
           type="text"
-        />
-      </div>
-      <div className="form-floating mb-4 form-group">
-        <MyTextInput
-          label="Пароль"
-          name="password"
+          onChange={formik.handleChange}
+          value={formik.values.username}
+          placeholder="Ваш ник"
+          name="username"
+          id="username"
+          autoComplete="username"
           required
-          id="password"
-          type="password"
+          isInvalid={authFailed}
+          ref={inputRef}
         />
-      </div>
-      <button type="submit" className="w-100 mb-3 btn btn-outline-primary">Войти</button>
+        <Form.Label htmlFor="username">Ваш ник</Form.Label>
+      </Form.Group>
+      <Form.Group className="form-floating mb-4">
+        <Form.Control
+          type="password"
+          onChange={formik.handleChange}
+          value={formik.values.password}
+          placeholder="Пароль"
+          name="password"
+          id="password"
+          autoComplete="current-password"
+          required
+          isInvalid={authFailed}
+        />
+        <Form.Label htmlFor="password">Пароль</Form.Label>
+        <Form.Control.Feedback type="invalid">
+          Неверные имя пользователя или пароль
+        </Form.Control.Feedback>
+      </Form.Group>
+      <Button className="w-100 mb-3" type="submit" variant="outline-primary">Войти</Button>
     </Form>
-  </Formik>
-);
+  );
+};
 
 export default LoginForm;

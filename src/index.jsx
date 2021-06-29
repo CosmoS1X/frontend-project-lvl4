@@ -1,5 +1,6 @@
 import 'core-js/stable/index.js';
 import 'regenerator-runtime/runtime.js';
+import 'bootstrap';
 
 import React from 'react';
 import ReactDOM from 'react-dom';

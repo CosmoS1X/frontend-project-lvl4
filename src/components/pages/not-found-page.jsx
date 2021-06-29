@@ -3,8 +3,8 @@ import React from 'react';
 const NotFoundPage = () => (
   <div className="card text-center">
     <div className="card-body">
-      <h5 className="card-title">404</h5>
-      <p className="card-text">Page not found</p>
+      <h1 className="card-title">Error 404</h1>
+      <h2 className="card-text">Page not found</h2>
     </div>
   </div>
 );

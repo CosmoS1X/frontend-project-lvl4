@@ -1,22 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Button, Navbar, Nav } from 'react-bootstrap';
+import useAuth from '../../hooks';
 
-import './header.scss';
+const AuthButton = () => {
+  const auth = useAuth();
+
+  return (
+    auth.loggedIn
+      ? <Button onClick={auth.logOut}>Log out</Button>
+      : <Button as={Link} to="/login">Log in</Button>
+  );
+};
 
 const Header = () => (
-  <div className="header d-flex">
-    <h3>
-      <Link to="/">Hexlet Chat</Link>
-    </h3>
-    <ul className="d-flex">
-      <li>
-        <Link to="/login">Login</Link>
-      </li>
-      <li>
-        <Link to="/not_found">Not Found</Link>
-      </li>
-    </ul>
-  </div>
+  <Navbar className="shadow-sm" bg="white" expand="lg">
+    <div className="container">
+      <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
+      <Nav className="mr-auto">
+        <Nav.Link as={Link} to="/not_found">Not Found</Nav.Link>
+        <AuthButton />
+      </Nav>
+    </div>
+  </Navbar>
 );
 
 export default Header;
