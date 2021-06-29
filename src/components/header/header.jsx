@@ -8,8 +8,8 @@ const AuthButton = () => {
 
   return (
     auth.loggedIn
-      ? <Button onClick={auth.logOut}>Log out</Button>
-      : <Button as={Link} to="/login">Log in</Button>
+      ? <Button onClick={auth.logOut}>Выйти</Button>
+      : <Button as={Link} to="/login">Войти</Button>
   );
 };
 
@@ -19,8 +19,8 @@ const Header = () => (
       <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
       <Nav className="mr-auto">
         <Nav.Link as={Link} to="/not_found">Not Found</Nav.Link>
-        <AuthButton />
       </Nav>
+      <AuthButton />
     </div>
   </Navbar>
 );
