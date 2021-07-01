@@ -1,23 +1,52 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
 import axios from 'axios';
+
+import Channel from '../channel';
+import * as actions from '../../actions';
 import routes from '../../routes.js';
 
-const MainPage = () => {
+const MainPage = ({
+  channels,
+  currentChannelId,
+  messages,
+  addData,
+  changeChannel,
+}) => {
   const history = useHistory();
-  const [content, setContent] = useState(null);
 
   useEffect(async () => {
     const userId = JSON.parse(localStorage.getItem('userId'));
 
     if (userId && userId.token) {
-      const response = await axios.get(routes.usersPath(), { headers: { Authorization: `Bearer ${userId.token}` } });
-      setContent(response.status);
+      const { data } = await axios.get(routes.usersPath(), { headers: { Authorization: `Bearer ${userId.token}` } });
+      addData(data);
+
       return;
     }
 
     history.push('/login');
   }, []);
+
+  const findCurrentChannelName = () => {
+    if (channels.length === 0) {
+      return '';
+    }
+
+    const [current] = channels.filter((channel) => channel.id === currentChannelId);
+    return current.name;
+  };
+
+  const renderChannel = (channel) => (
+    <Channel
+      key={channel.id}
+      id={channel.id}
+      name={channel.name}
+      currentChannel={currentChannelId}
+      onClick={() => changeChannel(channel.id)}
+    />
+  );
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
@@ -34,35 +63,28 @@ const MainPage = () => {
             </button>
           </div>
           <ul className="nav flex-column nav-pills nav-fill px-2">
-            <li className="nav-item w-100">
-              <button type="button" className="w-100 rounded-0 text-start btn btn-secondary">
-                <span className="me-1">#</span>
-                general
-              </button>
-            </li>
-            <li className="nav-item w-100">
-              <button type="button" className="w-100 rounded-0 text-start btn">
-                <span className="me-1">#</span>
-                random
-              </button>
-            </li>
+            {channels.map((channel) => renderChannel(channel))}
           </ul>
         </div>
         <div className="col p-0 h-100">
           <div className="d-flex flex-column h-100">
             <div className="bg-light mb-4 p-3 shadow-sm small">
               <p className="m-0">
-                <b># general</b>
+                <b>
+                  #
+                  {' '}
+                  {findCurrentChannelName()}
+                </b>
               </p>
-              <span className="text-muted">0 сообщений</span>
+              <span className="text-muted">
+                {messages.length}
+                {' '}
+                сообщений
+              </span>
             </div>
             <div id="messages-box" className="chat-messages overflow-auto px-5">
-              <h1>Welcome to Hexlet Chat</h1>
-              <p>
-                Response status:
-                {' '}
-                {content}
-              </p>
+              Messages:
+              {messages}
             </div>
             <div className="mt-auto px-5 py-3">
               <form noValidate className="py-1 border rounded-2">
@@ -86,4 +108,10 @@ const MainPage = () => {
   );
 };
 
-export default MainPage;
+const mapStateToProps = (state) => {
+  const { channels, currentChannelId, messages } = state;
+
+  return { channels, currentChannelId, messages };
+};
+
+export default connect(mapStateToProps, actions)(MainPage);
