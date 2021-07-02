@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 
 import Channel from '../channel';
+import Message from '../message';
 import * as actions from '../../actions';
 import routes from '../../routes.js';
 
@@ -77,14 +78,17 @@ const MainPage = ({
                 </b>
               </p>
               <span className="text-muted">
-                {messages.length}
+                {messages.filter(({ channelId }) => channelId === currentChannelId).length}
                 {' '}
                 сообщений
               </span>
             </div>
             <div id="messages-box" className="chat-messages overflow-auto px-5">
-              Messages:
-              {messages}
+              {messages
+                .filter(({ channelId }) => channelId === currentChannelId)
+                .map(({ id, user, message }) => (
+                  <Message key={id} user={user} message={message} />
+                ))}
             </div>
             <div className="mt-auto px-5 py-3">
               <form noValidate className="py-1 border rounded-2">
