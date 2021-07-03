@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import { io } from 'socket.io-client';
 
 import App from './components/app';
 import reducers from './reducers';
@@ -45,6 +46,8 @@ const store = createStore(
   initialState,
   compose(applyMiddleware(thunk), devtoolMiddleware),
 );
+
+const socket = io();
 
 const app = () => {
   ReactDOM.render(
