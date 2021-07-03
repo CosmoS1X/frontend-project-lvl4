@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 
 import Channel from '../channel';
@@ -16,6 +17,7 @@ const MainPage = ({
   changeChannel,
 }) => {
   const history = useHistory();
+  const { t } = useTranslation();
 
   useEffect(async () => {
     const userId = JSON.parse(localStorage.getItem('userId'));
@@ -78,9 +80,7 @@ const MainPage = ({
                 </b>
               </p>
               <span className="text-muted">
-                {messages.filter(({ channelId }) => channelId === currentChannelId).length}
-                {' '}
-                сообщений
+                {t('message', { count: messages.filter(({ channelId }) => channelId === currentChannelId).length })}
               </span>
             </div>
             <div id="messages-box" className="chat-messages overflow-auto px-5">
