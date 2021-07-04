@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions';
 
 const ChatForm = ({
-  socketApi,
+  socket,
   currentChannelId,
   currentUser,
 }) => {
@@ -18,14 +18,18 @@ const ChatForm = ({
     initialValues: {
       body: '',
     },
-    onSubmit: ({ body }) => {
+    onSubmit: async ({ body }) => {
       const message = {
         user: currentUser,
         message: body,
         channelId: currentChannelId,
+        date: new Date().toLocaleString(),
       };
 
-      socketApi.sendMessage(message);
+      socket.volatile.emit('newMessage', message, (res) => {
+        console.log(res.status);
+      });
+
       formik.resetForm();
       inputRef.current.focus();
     },

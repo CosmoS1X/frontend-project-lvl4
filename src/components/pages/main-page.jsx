@@ -8,9 +8,7 @@ import MessagesContainer from '../messages-container';
 import * as actions from '../../actions';
 import routes from '../../routes.js';
 
-const MainPage = (props) => {
-  console.log('MAIN PAGE PROPS:', props);
-  const { addData, addUser, socketApi } = props;
+const MainPage = ({ addData, addUser, socket }) => {
   const history = useHistory();
 
   useEffect(async () => {
@@ -25,13 +23,13 @@ const MainPage = (props) => {
     }
 
     history.push('/login');
-  });
+  }, []);
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
       <div className="row h-100 bg-white flex-md-row">
         <ChannelsContainer />
-        <MessagesContainer socketApi={socketApi} />
+        <MessagesContainer socket={socket} />
       </div>
     </div>
   );

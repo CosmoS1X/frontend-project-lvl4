@@ -1,10 +1,14 @@
 import React from 'react';
 
-const Message = ({ user, message }) => (
+const Message = ({ user, message, date }) => (
   <div>
-    <span><b>{user}</b></span>
+    [
+    {date}
+    ]
+    {' '}
+    <b>{user}</b>
     {': '}
-    <span>{message}</span>
+    {message}
   </div>
 );
 

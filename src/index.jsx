@@ -13,6 +13,7 @@ import { io } from 'socket.io-client';
 
 import App from './components/app';
 import reducers from './reducers';
+import { updateMessages } from './actions';
 import resources from './locales';
 
 import '../assets/application.scss';
@@ -22,8 +23,8 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 /* eslint-disable no-underscore-dangle */
-const ext = window.__REDUX_DEVTOOLS_EXTENSION__;
-const devtoolMiddleware = ext && ext();
+// const ext = window.__REDUX_DEVTOOLS_EXTENSION__;
+// const devtoolMiddleware = ext && ext();
 /* eslint-enable */
 
 i18n.use(initReactI18next).init({
@@ -38,29 +39,29 @@ i18n.use(initReactI18next).init({
 const initialState = {
   currentUser: null,
   channels: [],
-  currentChannelId: 1,
+  currentChannelId: null,
   messages: [],
 };
 
 const store = createStore(
   reducers,
   initialState,
-  compose(applyMiddleware(thunk), devtoolMiddleware),
+  compose(applyMiddleware(thunk)),
 );
 
 const socketIo = io();
 
-const api = {
-  sendMessage: (message) => socketIo.volatile.emit('newMessage', message),
-};
+socketIo.on('newMessage', (data) => {
+  store.dispatch(updateMessages(data));
+});
 
-const app = (socketApi) => {
+const app = (socket) => {
   ReactDOM.render(
     <Provider store={store}>
-      <App socketApi={socketApi} />
+      <App socket={socket} />
     </Provider>,
     document.querySelector('#chat'),
   );
 };
 
-app(api);
+app(socketIo);

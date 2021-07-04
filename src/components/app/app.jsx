@@ -40,7 +40,7 @@ const PrivateRoute = ({ path, children }) => {
   );
 };
 
-const App = ({ socketApi }) => {
+const App = ({ socket }) => {
   return (
     <AuthProvider>
       <Router>
@@ -48,7 +48,7 @@ const App = ({ socketApi }) => {
           <Header />
           <Switch>
             <PrivateRoute path="/" exact>
-              <MainPage socketApi={socketApi} />
+              <MainPage socket={socket} />
             </PrivateRoute>
             <Route path="/login" component={LoginPage} />
             <Route path="/signup" component={SignUpPage} />

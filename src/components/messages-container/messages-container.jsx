@@ -17,15 +17,20 @@ const getCurrentChannel = (channels, currentChannelId) => {
 
 const renderMessages = (messages, currentChannelId) => messages
   .filter(({ channelId }) => channelId === currentChannelId)
-  .map(({ id, user, message }) => (
-    <Message key={id} user={user} message={message} />
+  .map(({
+    id,
+    user,
+    message,
+    date,
+  }) => (
+    <Message key={id} user={user} message={message} date={date} />
   ));
 
 const MessagesContainer = ({
   channels,
   messages,
   currentChannelId,
-  socketApi,
+  socket,
 }) => {
   const { t } = useTranslation();
 
@@ -48,7 +53,7 @@ const MessagesContainer = ({
           {renderMessages(messages, currentChannelId)}
         </div>
         <div className="mt-auto px-5 py-3">
-          <ChatForm socketApi={socketApi} />
+          <ChatForm socket={socket} />
         </div>
       </div>
     </div>

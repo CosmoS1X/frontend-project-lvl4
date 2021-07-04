@@ -15,14 +15,7 @@ const buildState = (defaultState) => {
       { id: generalChannelId, name: 'general', removable: false },
       { id: randomChannelId, name: 'random', removable: false },
     ],
-    messages: [
-      {
-        channelId: generalChannelId, id: 1, user: 'admin', message: 'Hello!',
-      },
-      {
-        channelId: generalChannelId, id: 2, user: 'user', message: 'Hi!',
-      },
-    ],
+    messages: [],
     currentChannelId: generalChannelId,
     users: [
       { id: 1, username: 'admin', password: 'admin' },
