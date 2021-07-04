@@ -36,8 +36,9 @@ i18n.use(initReactI18next).init({
 });
 
 const initialState = {
+  currentUser: null,
   channels: [],
-  currentChannelId: null,
+  currentChannelId: 1,
   messages: [],
 };
 
@@ -47,15 +48,19 @@ const store = createStore(
   compose(applyMiddleware(thunk), devtoolMiddleware),
 );
 
-const socket = io();
+const socketIo = io();
 
-const app = () => {
+const api = {
+  sendMessage: (message) => socketIo.volatile.emit('newMessage', message),
+};
+
+const app = (socketApi) => {
   ReactDOM.render(
     <Provider store={store}>
-      <App />
+      <App socketApi={socketApi} />
     </Provider>,
     document.querySelector('#chat'),
   );
 };
 
-app();
+app(api);

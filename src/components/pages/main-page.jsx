@@ -8,7 +8,9 @@ import MessagesContainer from '../messages-container';
 import * as actions from '../../actions';
 import routes from '../../routes.js';
 
-const MainPage = ({ addData }) => {
+const MainPage = (props) => {
+  console.log('MAIN PAGE PROPS:', props);
+  const { addData, addUser, socketApi } = props;
   const history = useHistory();
 
   useEffect(async () => {
@@ -16,19 +18,20 @@ const MainPage = ({ addData }) => {
 
     if (userId && userId.token) {
       const { data } = await axios.get(routes.usersPath(), { headers: { Authorization: `Bearer ${userId.token}` } });
+      addUser(userId.username);
       addData(data);
 
       return;
     }
 
     history.push('/login');
-  }, []);
+  });
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
       <div className="row h-100 bg-white flex-md-row">
         <ChannelsContainer />
-        <MessagesContainer />
+        <MessagesContainer socketApi={socketApi} />
       </div>
     </div>
   );

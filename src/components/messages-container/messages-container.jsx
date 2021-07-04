@@ -25,6 +25,7 @@ const MessagesContainer = ({
   channels,
   messages,
   currentChannelId,
+  socketApi,
 }) => {
   const { t } = useTranslation();
 
@@ -47,7 +48,7 @@ const MessagesContainer = ({
           {renderMessages(messages, currentChannelId)}
         </div>
         <div className="mt-auto px-5 py-3">
-          <ChatForm />
+          <ChatForm socketApi={socketApi} />
         </div>
       </div>
     </div>

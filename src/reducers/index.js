@@ -4,6 +4,8 @@ const reducer = (state = {}, action) => {
       return { ...state, ...action.payload };
     case 'CHANGE_CHANNEL':
       return { ...state, currentChannelId: action.payload };
+    case 'ADD_USER':
+      return { ...state, currentUser: action.payload };
     default:
       return state;
   }

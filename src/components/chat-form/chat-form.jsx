@@ -1,12 +1,34 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useFormik } from 'formik';
+import { connect } from 'react-redux';
+import * as actions from '../../actions';
 
-const ChatForm = () => {
+const ChatForm = ({
+  socketApi,
+  currentChannelId,
+  currentUser,
+}) => {
+  const inputRef = useRef();
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
   const formik = useFormik({
     initialValues: {
       body: '',
     },
-    onSubmit: (value) => console.log(value),
+    onSubmit: ({ body }) => {
+      const message = {
+        user: currentUser,
+        message: body,
+        channelId: currentChannelId,
+      };
+
+      socketApi.sendMessage(message);
+      formik.resetForm();
+      inputRef.current.focus();
+    },
   });
 
   return (
@@ -19,6 +41,7 @@ const ChatForm = () => {
           className="border-0 p-0 ps-2 form-control"
           onChange={formik.handleChange}
           value={formik.values.body}
+          ref={inputRef}
         />
         <div className="input-group-append">
           <button type="submit" className="btn btn-group-vertical">
@@ -33,4 +56,16 @@ const ChatForm = () => {
   );
 };
 
-export default ChatForm;
+const mapStateToProps = ({
+  channels,
+  currentChannelId,
+  currentUser,
+  messages,
+}) => ({
+  channels,
+  currentChannelId,
+  currentUser,
+  messages,
+});
+
+export default connect(mapStateToProps, actions)(ChatForm);
