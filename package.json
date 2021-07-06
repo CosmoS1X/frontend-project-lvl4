@@ -23,7 +23,7 @@
   "dependencies": {
     "@popperjs/core": "^2.9.2",
     "axios": "^0.21.1",
-    "bootstrap": "^5.0.1",
+    "bootstrap": "^5.0.2",
     "classnames": "^2.3.1",
     "core-js": "^3.12.1",
     "debug": "^4.3.1",
@@ -44,7 +44,7 @@
     "popper.js": "^1.16.1",
     "pug": "^3.0.2",
     "react": "^17.0.2",
-    "react-bootstrap": "^1.6.1",
+    "react-bootstrap": "^2.0.0-alpha.2",
     "react-dom": "^17.0.2",
     "react-i18next": "^11.11.0",
     "react-redux": "^7.2.4",
