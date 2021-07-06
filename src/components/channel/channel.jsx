@@ -1,26 +1,40 @@
 import React from 'react';
-import cn from 'classnames';
+import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
 
 const Channel = ({
   id,
   name,
+  removable,
   currentChannel,
   onClick,
 }) => {
-  const classes = cn({
-    'w-100': true,
-    'rounded-0': true,
-    'text-start': true,
-    btn: true,
-    'btn-secondary': id === currentChannel,
-  });
+  const buttonVariant = id === currentChannel ? 'secondary' : 'light';
 
   return (
     <li className="nav-item w-100">
-      <button type="button" className={classes} onClick={onClick}>
-        <span className="me-1">#</span>
-        {name}
-      </button>
+      <Dropdown as={ButtonGroup} className="d-flex">
+        <Button
+          variant={buttonVariant}
+          className="w-100 rounded-0 text-start text-truncate"
+          onClick={onClick}
+        >
+          <span className="me-1">#</span>
+          {name}
+        </Button>
+
+        {removable && (
+          <>
+            <Dropdown.Toggle split variant={buttonVariant} className="flex-grow-0" />
+
+            <Dropdown.Menu>
+              <Dropdown.Item href="#">
+                Удалить
+              </Dropdown.Item>
+              <Dropdown.Item href="#">Переименовать</Dropdown.Item>
+            </Dropdown.Menu>
+          </>
+        )}
+      </Dropdown>
     </li>
   );
 };

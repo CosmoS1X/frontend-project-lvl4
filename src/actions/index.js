@@ -6,4 +6,6 @@ export const updateMessages = createAction('UPDATE_MESSAGES');
 
 export const changeChannel = createAction('CHANGE_CHANNEL');
 
+export const addChannel = createAction('ADD_CHANNEL');
+
 export const addUser = createAction('ADD_USER');

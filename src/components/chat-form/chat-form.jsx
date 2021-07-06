@@ -23,7 +23,6 @@ const ChatForm = ({
         user: currentUser,
         message: body,
         channelId: currentChannelId,
-        date: new Date().toLocaleString(),
       };
 
       socket.volatile.emit('newMessage', message, (res) => {

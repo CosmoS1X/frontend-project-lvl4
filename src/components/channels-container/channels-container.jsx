@@ -4,16 +4,22 @@ import { useTranslation } from 'react-i18next';
 import * as actions from '../../actions';
 import Channel from '../channel';
 
-const ChannelsContainer = ({ channels, currentChannelId, changeChannel }) => {
+const ChannelsContainer = ({
+  channels,
+  currentChannelId,
+  changeChannel,
+  onClick,
+}) => {
   const { t } = useTranslation();
 
-  const renderChannel = (channel) => (
+  const renderChannel = ({ id, name, removable }) => (
     <Channel
-      key={channel.id}
-      id={channel.id}
-      name={channel.name}
+      key={id}
+      id={id}
+      name={name}
+      removable={removable}
       currentChannel={currentChannelId}
-      onClick={() => changeChannel(channel.id)}
+      onClick={() => changeChannel(id)}
     />
   );
 
@@ -21,7 +27,11 @@ const ChannelsContainer = ({ channels, currentChannelId, changeChannel }) => {
     <div className="col-4 col-md-2 border-end pt-5 px-0 bg-light">
       <div className="d-flex justify-content-between mb-2 ps-4 pe-2">
         <span>{t('channels')}</span>
-        <button type="button" className="p-0 text-primary btn btn-group-vertical">
+        <button
+          type="button"
+          className="p-0 text-primary btn btn-group-vertical"
+          onClick={onClick}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"

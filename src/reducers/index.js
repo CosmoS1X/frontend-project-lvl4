@@ -1,13 +1,15 @@
-const reducer = (state = {}, action) => {
-  switch (action.type) {
+const reducer = (state = {}, { type, payload }) => {
+  switch (type) {
     case 'ADD_DATA':
-      return { ...state, ...action.payload };
+      return { ...state, ...payload };
     case 'UPDATE_MESSAGES':
-      return { ...state, messages: [...state.messages, action.payload] };
+      return { ...state, messages: [...state.messages, payload] };
     case 'CHANGE_CHANNEL':
-      return { ...state, currentChannelId: action.payload };
+      return { ...state, currentChannelId: payload };
+    case 'ADD_CHANNEL':
+      return { ...state, channels: [...state.channels, payload] };
     case 'ADD_USER':
-      return { ...state, currentUser: action.payload };
+      return { ...state, currentUser: payload };
     default:
       return state;
   }
