@@ -5,9 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-const Add = ({
-  show, onHide, socket, channels,
-}) => {
+const Rename = ({ show, onHide, channels }) => {
   const inputRef = useRef();
   const { t } = useTranslation();
 
@@ -20,29 +18,17 @@ const Add = ({
     }),
     validateOnChange: false,
     validateOnBlur: false,
-    onSubmit: async (values) => {
-      socket.volatile.emit('newChannel', values, (res) => {
-        console.log(res.status);
-      });
-
-      formik.resetForm();
-      onHide();
-    },
+    onSubmit: (values) => console.log(values),
   });
 
   useEffect(() => {
-    inputRef.current.focus();
-
-    return () => {
-      formik.resetForm();
-      formik.errors = {};
-    };
-  }, [show]);
+    inputRef.current.select();
+  }, []);
 
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>Переименовать канал</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -51,7 +37,6 @@ const Add = ({
             <Form.Control
               className="mb-2"
               name="name"
-              data-testid="add-channel"
               onChange={formik.handleChange}
               value={formik.values.body}
               ref={inputRef}
@@ -61,7 +46,7 @@ const Add = ({
               {formik.errors.name}
             </Form.Control.Feedback>
             <div className="d-flex justify-content-end">
-              <Button type="button" className="me-2" variant="secondary" onClick={onHide}>Отменить</Button>
+              <Button type="button" className="me-2" variant="secondary">Отменить</Button>
               <Button type="submit" variant="primary">Отправить</Button>
             </div>
           </Form.Group>
@@ -73,4 +58,4 @@ const Add = ({
 
 const mapStateToProps = ({ channels }) => ({ channels });
 
-export default connect(mapStateToProps)(Add);
+export default connect(mapStateToProps)(Rename);

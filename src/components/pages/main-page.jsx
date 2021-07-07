@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import ChannelsContainer from '../channels-container';
 import MessagesContainer from '../messages-container';
-import Add from '../modals';
+import { Add } from '../modals';
 import * as actions from '../../actions';
 import routes from '../../routes.js';
 
@@ -33,7 +33,7 @@ const MainPage = ({ addData, addUser, socket }) => {
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
       <div className="row h-100 bg-white flex-md-row">
-        <ChannelsContainer onClick={handleShow} />
+        <ChannelsContainer onShowAddModal={handleShow} />
         <MessagesContainer socket={socket} />
         {show ? <Add show={show} onHide={handleClose} socket={socket} /> : null}
       </div>
@@ -42,3 +42,6 @@ const MainPage = ({ addData, addUser, socket }) => {
 };
 
 export default connect(null, actions)(MainPage);
+
+// {show ? <Remove show={show} onHide={handleClose} /> : null}
+// {show ? <Rename show={show} onHide={handleClose} /> : null}

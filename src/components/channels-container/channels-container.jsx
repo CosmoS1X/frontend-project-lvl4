@@ -8,7 +8,7 @@ const ChannelsContainer = ({
   channels,
   currentChannelId,
   changeChannel,
-  onClick,
+  onShowAddModal,
 }) => {
   const { t } = useTranslation();
 
@@ -19,7 +19,7 @@ const ChannelsContainer = ({
       name={name}
       removable={removable}
       currentChannel={currentChannelId}
-      onClick={() => changeChannel(id)}
+      onChangeChannel={() => changeChannel(id)}
     />
   );
 
@@ -30,7 +30,7 @@ const ChannelsContainer = ({
         <button
           type="button"
           className="p-0 text-primary btn btn-group-vertical"
-          onClick={onClick}
+          onClick={onShowAddModal}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
