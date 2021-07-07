@@ -35,7 +35,7 @@ const MainPage = ({ addData, addUser, socket }) => {
       <div className="row h-100 bg-white flex-md-row">
         <ChannelsContainer onClick={handleShow} />
         <MessagesContainer socket={socket} />
-        <Add show={show} onHide={handleClose} socket={socket} />
+        {show ? <Add show={show} onHide={handleClose} socket={socket} /> : null}
       </div>
     </div>
   );

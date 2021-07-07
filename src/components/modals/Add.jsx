@@ -1,26 +1,25 @@
 import React, { useEffect, useRef } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-const Add = (props) => {
-  // console.log('ADD MODAL PROPS', props);
-  const { show, onHide, socket } = props;
-
-  // const [invalid, setInvalid] = useState(false);
-
+const Add = ({
+  show, onHide, socket, channels,
+}) => {
   const inputRef = useRef();
-
-  useEffect(() => {
-    console.log('show');
-    // inputRef.current.focus();
-  }, []);
+  const { t } = useTranslation();
 
   const formik = useFormik({
     initialValues: { name: '' },
     validationSchema: Yup.object({
-      name: Yup.string().required(),
+      name: Yup.string()
+        .required(t('errors.required'))
+        .notOneOf(channels.map((i) => i.name), t('errors.alreadyExists')),
     }),
+    validateOnChange: false,
+    validateOnBlur: false,
     onSubmit: async (values) => {
       socket.volatile.emit('newChannel', values, (res) => {
         console.log(res.status);
@@ -31,7 +30,14 @@ const Add = (props) => {
     },
   });
 
-  // console.log('invalid', formik.errors.name);
+  useEffect(() => {
+    inputRef.current.focus();
+
+    return () => {
+      formik.resetForm();
+      formik.errors = {};
+    };
+  }, [show]);
 
   return (
     <Modal show={show} onHide={onHide} centered>
@@ -52,7 +58,7 @@ const Add = (props) => {
               isInvalid={formik.errors.name}
             />
             <Form.Control.Feedback type="invalid">
-              Обязательное поле
+              {formik.errors.name}
             </Form.Control.Feedback>
             <div className="d-flex justify-content-end">
               <Button type="button" className="me-2" variant="secondary" onClick={onHide}>Отменить</Button>
@@ -66,4 +72,6 @@ const Add = (props) => {
   );
 };
 
-export default Add;
+const mapStateToProps = ({ channels }) => ({ channels });
+
+export default connect(mapStateToProps)(Add);
