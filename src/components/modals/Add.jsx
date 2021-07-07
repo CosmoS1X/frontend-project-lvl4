@@ -4,11 +4,13 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useSocket } from '../../hooks';
 
 const Add = ({
-  show, onHide, socket, channels,
+  show, onHide, channels,
 }) => {
   const inputRef = useRef();
+  const socket = useSocket();
   const { t } = useTranslation();
 
   const formik = useFormik({

@@ -1,3 +1,4 @@
 import useAuth from './use-auth.jsx';
+import useSocket from './use-socket.jsx';
 
-export default useAuth;
+export { useSocket, useAuth };

@@ -9,7 +9,7 @@ import { Add } from '../modals';
 import * as actions from '../../actions';
 import routes from '../../routes.js';
 
-const MainPage = ({ addData, addUser, socket }) => {
+const MainPage = ({ addData, addUser }) => {
   const history = useHistory();
   const [show, setShow] = useState(false);
 
@@ -34,8 +34,8 @@ const MainPage = ({ addData, addUser, socket }) => {
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
       <div className="row h-100 bg-white flex-md-row">
         <ChannelsContainer onShowAddModal={handleShow} />
-        <MessagesContainer socket={socket} />
-        {show ? <Add show={show} onHide={handleClose} socket={socket} /> : null}
+        <MessagesContainer />
+        {show ? <Add show={show} onHide={handleClose} /> : null}
       </div>
     </div>
   );

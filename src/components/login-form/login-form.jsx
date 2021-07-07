@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 import routes from '../../routes.js';
-import useAuth from '../../hooks';
+import { useAuth } from '../../hooks';
 
 const LoginForm = () => {
   const inputRef = useRef();

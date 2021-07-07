@@ -2,22 +2,21 @@ import React, { useRef, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
+import { useSocket } from '../../hooks';
 
 const ChatForm = ({
-  socket,
   currentChannelId,
   currentUser,
 }) => {
   const inputRef = useRef();
+  const socket = useSocket();
 
   useEffect(() => {
     inputRef.current.focus();
   }, []);
 
   const formik = useFormik({
-    initialValues: {
-      body: '',
-    },
+    initialValues: { body: '' },
     onSubmit: async ({ body }) => {
       const message = {
         user: currentUser,

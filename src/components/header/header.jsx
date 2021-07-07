@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Navbar, Nav } from 'react-bootstrap';
-import useAuth from '../../hooks';
+import { useAuth } from '../../hooks';
 
 const AuthButton = () => {
   const auth = useAuth();

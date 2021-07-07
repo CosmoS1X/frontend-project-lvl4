@@ -1,3 +1,4 @@
 import authContext from './auth.jsx';
+import socketContext from './socket.jsx';
 
-export default authContext;
+export { socketContext, authContext };
