@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-const Rename = ({ show, onHide, channels }) => {
+const Rename = ({ modalShown, onHide, channels }) => {
   const inputRef = useRef();
   const { t } = useTranslation();
 
@@ -26,7 +26,7 @@ const Rename = ({ show, onHide, channels }) => {
   }, []);
 
   return (
-    <Modal show={show} onHide={onHide} centered>
+    <Modal show={modalShown === 'renaming'} onHide={onHide} centered>
       <Modal.Header closeButton>
         <Modal.Title>Переименовать канал</Modal.Title>
       </Modal.Header>
@@ -46,7 +46,7 @@ const Rename = ({ show, onHide, channels }) => {
               {formik.errors.name}
             </Form.Control.Feedback>
             <div className="d-flex justify-content-end">
-              <Button type="button" className="me-2" variant="secondary">Отменить</Button>
+              <Button type="button" className="me-2" variant="secondary" onClick={onHide}>Отменить</Button>
               <Button type="submit" variant="primary">Отправить</Button>
             </div>
           </Form.Group>

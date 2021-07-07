@@ -1,8 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
+import * as actions from '../../actions';
 
 const Channel = ({
-  id, name, removable, currentChannel, onChangeChannel,
+  id, name, removable, currentChannel, onChangeChannel, showModal,
 }) => {
   const buttonVariant = id === currentChannel ? 'secondary' : 'light';
 
@@ -23,10 +25,10 @@ const Channel = ({
             <Dropdown.Toggle split variant={buttonVariant} className="flex-grow-0" />
 
             <Dropdown.Menu>
-              <Dropdown.Item href="#" onClick={() => console.log('remove modal')}>
+              <Dropdown.Item href="#" onClick={() => showModal('removing')}>
                 Удалить
               </Dropdown.Item>
-              <Dropdown.Item href="#" onClick={() => console.log('rename modal')}>
+              <Dropdown.Item href="#" onClick={() => showModal('renaming')}>
                 Переименовать
               </Dropdown.Item>
             </Dropdown.Menu>
@@ -37,4 +39,4 @@ const Channel = ({
   );
 };
 
-export default Channel;
+export default connect(null, actions)(Channel);

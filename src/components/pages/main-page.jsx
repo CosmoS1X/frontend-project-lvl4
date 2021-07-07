@@ -1,20 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
 import ChannelsContainer from '../channels-container';
 import MessagesContainer from '../messages-container';
-import { Add } from '../modals';
 import * as actions from '../../actions';
 import routes from '../../routes.js';
+import getModal from '../modals';
 
-const MainPage = ({ addData, addUser }) => {
+const renderModal = ({ modalShown, closeModal }) => {
+  if (!modalShown) {
+    return null;
+  }
+
+  const Component = getModal(modalShown);
+  return <Component modalShown={modalShown} onHide={closeModal} />;
+};
+
+const MainPage = ({
+  addData, addUser, showModal, closeModal, modalShown,
+}) => {
   const history = useHistory();
-  const [show, setShow] = useState(false);
-
-  const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
 
   useEffect(async () => {
     const userId = JSON.parse(localStorage.getItem('userId'));
@@ -33,15 +40,14 @@ const MainPage = ({ addData, addUser }) => {
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
       <div className="row h-100 bg-white flex-md-row">
-        <ChannelsContainer onShowAddModal={handleShow} />
+        <ChannelsContainer onShowAddModal={() => showModal('adding')} />
         <MessagesContainer />
-        {show ? <Add show={show} onHide={handleClose} /> : null}
+        {renderModal({ modalShown, closeModal })}
       </div>
     </div>
   );
 };
 
-export default connect(null, actions)(MainPage);
+const mapStateToProps = ({ modalShown }) => ({ modalShown });
 
-// {show ? <Remove show={show} onHide={handleClose} /> : null}
-// {show ? <Rename show={show} onHide={handleClose} /> : null}
+export default connect(mapStateToProps, actions)(MainPage);

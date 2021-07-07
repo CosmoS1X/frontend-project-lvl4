@@ -7,8 +7,9 @@ import * as Yup from 'yup';
 import { useSocket } from '../../hooks';
 
 const Add = ({
-  show, onHide, channels,
+  modalShown, onHide, channels,
 }) => {
+  console.log('ADD MODAL modalShown', modalShown);
   const inputRef = useRef();
   const socket = useSocket();
   const { t } = useTranslation();
@@ -37,12 +38,11 @@ const Add = ({
 
     return () => {
       formik.resetForm();
-      formik.errors = {};
     };
-  }, [show]);
+  }, []);
 
   return (
-    <Modal show={show} onHide={onHide} centered>
+    <Modal show={modalShown === 'adding'} onHide={onHide} centered>
       <Modal.Header closeButton>
         <Modal.Title>Добавить канал</Modal.Title>
       </Modal.Header>
@@ -73,6 +73,6 @@ const Add = ({
   );
 };
 
-const mapStateToProps = ({ channels }) => ({ channels });
+const mapStateToProps = ({ channels, modalShown }) => ({ channels, modalShown });
 
 export default connect(mapStateToProps)(Add);

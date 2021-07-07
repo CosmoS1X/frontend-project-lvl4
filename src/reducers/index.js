@@ -10,6 +10,10 @@ const reducer = (state = {}, { type, payload }) => {
       return { ...state, channels: [...state.channels, payload] };
     case 'ADD_USER':
       return { ...state, currentUser: payload };
+    case 'SHOW_ADD_MODAL':
+      return { ...state, modalShown: payload };
+    case 'CLOSE_MODAL':
+      return { ...state, modalShown: null };
     default:
       return state;
   }

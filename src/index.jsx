@@ -39,8 +39,9 @@ i18n.use(initReactI18next).init({
 const initialState = {
   currentUser: null,
   channels: [],
-  currentChannelId: null,
+  currentChannelId: 1,
   messages: [],
+  modalShown: null,
 };
 
 const store = createStore(
