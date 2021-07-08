@@ -12,8 +12,10 @@ import { initReactI18next } from 'react-i18next';
 import { io } from 'socket.io-client';
 
 import App from './components/app';
-import reducers from './reducers';
-import { updateMessages, addChannel } from './actions';
+import reducer from './reducers';
+import {
+  updateMessages, addChannel, renameChannel, removeChannel,
+} from './actions';
 import resources from './locales';
 
 import '../assets/application.scss';
@@ -41,11 +43,11 @@ const initialState = {
   channels: [],
   currentChannelId: 1,
   messages: [],
-  modalShown: null,
+  modalShown: { modalName: null, id: null },
 };
 
 const store = createStore(
-  reducers,
+  reducer,
   initialState,
   compose(applyMiddleware(thunk), devtoolMiddleware),
 );
@@ -58,6 +60,14 @@ socketIo.on('newMessage', (data) => {
 
 socketIo.on('newChannel', (data) => {
   store.dispatch(addChannel(data));
+});
+
+socketIo.on('renameChannel', (data) => {
+  store.dispatch(renameChannel(data));
+});
+
+socketIo.on('removeChannel', (data) => {
+  store.dispatch(removeChannel(data));
 });
 
 const app = (socket) => {

@@ -10,11 +10,12 @@ import routes from '../../routes.js';
 import getModal from '../modals';
 
 const renderModal = ({ modalShown, closeModal }) => {
-  if (!modalShown) {
+  const { modalName } = modalShown;
+  if (!modalName) {
     return null;
   }
 
-  const Component = getModal(modalShown);
+  const Component = getModal(modalName);
   return <Component modalShown={modalShown} onHide={closeModal} />;
 };
 
@@ -40,7 +41,7 @@ const MainPage = ({
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
       <div className="row h-100 bg-white flex-md-row">
-        <ChannelsContainer onShowAddModal={() => showModal('adding')} />
+        <ChannelsContainer onShowAddModal={() => showModal({ modalName: 'adding', id: null })} />
         <MessagesContainer />
         {renderModal({ modalShown, closeModal })}
       </div>

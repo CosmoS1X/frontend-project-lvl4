@@ -4,13 +4,17 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useSocket } from '../../hooks';
 
-const Rename = ({ modalShown, onHide, channels }) => {
+const Rename = ({ modalShown: { modalName, id }, onHide, channels }) => {
   const inputRef = useRef();
+  const socket = useSocket();
   const { t } = useTranslation();
 
+  const currentChannel = channels.find((channel) => channel.id === id);
+
   const formik = useFormik({
-    initialValues: { name: '' },
+    initialValues: { name: currentChannel.name },
     validationSchema: Yup.object({
       name: Yup.string()
         .required(t('errors.required'))
@@ -18,7 +22,13 @@ const Rename = ({ modalShown, onHide, channels }) => {
     }),
     validateOnChange: false,
     validateOnBlur: false,
-    onSubmit: (values) => console.log(values),
+    onSubmit: async (values) => {
+      socket.volatile.emit('renameChannel', { ...values, id }, (res) => {
+        console.log(res.status);
+      });
+
+      onHide();
+    },
   });
 
   useEffect(() => {
@@ -26,7 +36,7 @@ const Rename = ({ modalShown, onHide, channels }) => {
   }, []);
 
   return (
-    <Modal show={modalShown === 'renaming'} onHide={onHide} centered>
+    <Modal show={modalName === 'renaming'} onHide={onHide} centered>
       <Modal.Header closeButton>
         <Modal.Title>Переименовать канал</Modal.Title>
       </Modal.Header>
@@ -38,7 +48,7 @@ const Rename = ({ modalShown, onHide, channels }) => {
               className="mb-2"
               name="name"
               onChange={formik.handleChange}
-              value={formik.values.body}
+              value={formik.values.name}
               ref={inputRef}
               isInvalid={formik.errors.name}
             />
