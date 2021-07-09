@@ -15,6 +15,7 @@ export default {
       lengthLimits: 'От 3 до 20 символов',
       noLessThan: 'Не менее 6 символов',
       mustMatch: 'Пароли должны совпадать',
+      userExists: 'Такой пользователь уже существует',
     },
   },
 };
