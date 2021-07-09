@@ -38,7 +38,7 @@ const Rename = ({ modalShown: { modalName, id }, onHide, channels }) => {
   return (
     <Modal show={modalName === 'renaming'} onHide={onHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t('modals.rename')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -47,6 +47,7 @@ const Rename = ({ modalShown: { modalName, id }, onHide, channels }) => {
             <Form.Control
               className="mb-2"
               name="name"
+              data-testid="rename-channel"
               onChange={formik.handleChange}
               value={formik.values.name}
               ref={inputRef}
@@ -56,8 +57,8 @@ const Rename = ({ modalShown: { modalName, id }, onHide, channels }) => {
               {formik.errors.name}
             </Form.Control.Feedback>
             <div className="d-flex justify-content-end">
-              <Button type="button" className="me-2" variant="secondary" onClick={onHide}>Отменить</Button>
-              <Button type="submit" variant="primary">Отправить</Button>
+              <Button type="button" className="me-2" variant="secondary" onClick={onHide}>{t('buttons.cancel')}</Button>
+              <Button type="submit" variant="primary">{t('buttons.send')}</Button>
             </div>
           </Form.Group>
         </Form>

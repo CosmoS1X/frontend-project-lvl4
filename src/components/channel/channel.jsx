@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import * as actions from '../../actions';
 
 const Channel = ({
   id, name, removable, currentChannel, onChangeChannel, showModal,
 }) => {
+  const { t } = useTranslation();
   const buttonVariant = id === currentChannel ? 'secondary' : 'light';
 
   return (
@@ -26,10 +28,10 @@ const Channel = ({
 
             <Dropdown.Menu>
               <Dropdown.Item href="#" onClick={() => showModal({ modalName: 'removing', id })}>
-                Удалить
+                {t('buttons.delete')}
               </Dropdown.Item>
               <Dropdown.Item href="#" onClick={() => showModal({ modalName: 'renaming', id })}>
-                Переименовать
+                {t('buttons.rename')}
               </Dropdown.Item>
             </Dropdown.Menu>
           </>

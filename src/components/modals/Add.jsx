@@ -42,7 +42,7 @@ const Add = ({
   return (
     <Modal show={modalName === 'adding'} onHide={onHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>{t('modals.add')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -61,8 +61,8 @@ const Add = ({
               {formik.errors.name}
             </Form.Control.Feedback>
             <div className="d-flex justify-content-end">
-              <Button type="button" className="me-2" variant="secondary" onClick={onHide}>Отменить</Button>
-              <Button type="submit" variant="primary">Отправить</Button>
+              <Button type="button" className="me-2" variant="secondary" onClick={onHide}>{t('buttons.cancel')}</Button>
+              <Button type="submit" variant="primary">{t('buttons.send')}</Button>
             </div>
           </Form.Group>
         </Form>

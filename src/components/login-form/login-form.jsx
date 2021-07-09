@@ -2,11 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import routes from '../../routes.js';
 import { useAuth } from '../../hooks';
 
 const LoginForm = () => {
+  const { t } = useTranslation();
   const inputRef = useRef();
   const auth = useAuth();
   const history = useHistory();
@@ -40,13 +42,13 @@ const LoginForm = () => {
 
   return (
     <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
-      <h1 className="text-center mb-4">Войти</h1>
+      <h1 className="text-center mb-4">{t('login')}</h1>
       <Form.Group className="form-floating mb-3">
         <Form.Control
           type="text"
           onChange={formik.handleChange}
           value={formik.values.username}
-          placeholder="Ваш ник"
+          placeholder={t('nickname')}
           name="username"
           id="username"
           autoComplete="username"
@@ -54,26 +56,26 @@ const LoginForm = () => {
           isInvalid={authFailed}
           ref={inputRef}
         />
-        <Form.Label htmlFor="username">Ваш ник</Form.Label>
+        <Form.Label htmlFor="username">{t('nickname')}</Form.Label>
       </Form.Group>
       <Form.Group className="form-floating mb-4">
         <Form.Control
           type="password"
           onChange={formik.handleChange}
           value={formik.values.password}
-          placeholder="Пароль"
+          placeholder={t('password')}
           name="password"
           id="password"
           autoComplete="current-password"
           required
           isInvalid={authFailed}
         />
-        <Form.Label htmlFor="password">Пароль</Form.Label>
+        <Form.Label htmlFor="password">{t('password')}</Form.Label>
         <Form.Control.Feedback type="invalid">
-          Неверные имя пользователя или пароль
+          {t('errors.authFailed')}
         </Form.Control.Feedback>
       </Form.Group>
-      <Button className="w-100 mb-3" type="submit" variant="outline-primary">Войти</Button>
+      <Button className="w-100 mb-3" type="submit" variant="outline-primary">{t('login')}</Button>
     </Form>
   );
 };

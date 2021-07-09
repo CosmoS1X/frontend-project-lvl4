@@ -61,7 +61,7 @@ const SignupForm = () => {
           name="username"
           autoComplete="username"
           id="username"
-          placeholder="От 3 до 20 символов"
+          placeholder={t('errors.lengthLimits')}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.username}
@@ -78,7 +78,7 @@ const SignupForm = () => {
           autoComplete="new-password"
           id="password"
           aria-describedby="passwordHelpBlock"
-          placeholder="Не менее 6 символов"
+          placeholder={t('errors.noLessThan')}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.password}
@@ -93,7 +93,7 @@ const SignupForm = () => {
           name="confirmPassword"
           autoComplete="new-password"
           id="confirmPassword"
-          placeholder="Пароли должны совпадать"
+          placeholder={t('errors.mustMatch')}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.confirmPassword}

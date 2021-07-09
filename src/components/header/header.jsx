@@ -1,12 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Navbar } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../hooks';
 
 const AuthButton = () => {
   const auth = useAuth();
+  const { t } = useTranslation();
 
-  return auth.loggedIn ? <Button onClick={auth.logOut}>Выйти</Button> : null;
+  return auth.loggedIn ? <Button onClick={auth.logOut}>{t('logOut')}</Button> : null;
 };
 
 const Header = () => (
