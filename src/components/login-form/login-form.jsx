@@ -9,7 +9,6 @@ import { useAuth } from '../../hooks';
 const LoginForm = () => {
   const inputRef = useRef();
   const auth = useAuth();
-  console.log('AUTH:', auth);
   const history = useHistory();
   const [authFailed, setAuthFailed] = useState(false);
 
