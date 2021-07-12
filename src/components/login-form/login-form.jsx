@@ -71,9 +71,7 @@ const LoginForm = () => {
           isInvalid={authFailed}
         />
         <Form.Label htmlFor="password">{t('password')}</Form.Label>
-        <Form.Control.Feedback type="invalid">
-          {t('errors.authFailed')}
-        </Form.Control.Feedback>
+        {authFailed ? <div className="invalid-tooltip">{t('errors.authFailed')}</div> : null}
       </Form.Group>
       <Button className="w-100 mb-3" type="submit" variant="outline-primary">{t('login')}</Button>
     </Form>
