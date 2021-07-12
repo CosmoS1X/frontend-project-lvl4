@@ -23,10 +23,7 @@ const Add = ({
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: async (values) => {
-      socket.volatile.emit('newChannel', values, (res) => {
-        console.log(res.status);
-      });
-
+      await socket.createChannel(values);
       onHide();
     },
   });

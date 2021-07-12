@@ -23,10 +23,7 @@ const Rename = ({ modalShown: { modalName, id }, onHide, channels }) => {
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: async (values) => {
-      socket.volatile.emit('renameChannel', { ...values, id }, (res) => {
-        console.log(res.status);
-      });
-
+      await socket.renameChannel({ ...values, id });
       onHide();
     },
   });

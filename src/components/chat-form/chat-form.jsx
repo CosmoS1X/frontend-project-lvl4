@@ -26,10 +26,7 @@ const ChatForm = ({
         channelId: currentChannelId,
       };
 
-      socket.volatile.emit('newMessage', message, (res) => {
-        console.log(res.status);
-      });
-
+      await socket.sendMessage(message);
       formik.resetForm();
       inputRef.current.focus();
     },
