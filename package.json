@@ -1,8 +1,8 @@
 {
   "name": "@hexlet/code",
   "version": "1.0.0",
-  "description": "Slack",
-  "main": "src/index.js",
+  "description": "Hexlet Chat",
+  "main": "src/init.jsx",
   "type": "module",
   "engines": {
     "node": "14"
