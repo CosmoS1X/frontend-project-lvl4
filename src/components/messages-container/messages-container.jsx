@@ -65,10 +65,12 @@ const mapStateToProps = ({
   channels,
   currentChannelId,
   messages,
+  loading,
 }) => ({
   channels,
   currentChannelId,
   messages,
+  loading,
 });
 
 export default connect(mapStateToProps, actions)(MessagesContainer);

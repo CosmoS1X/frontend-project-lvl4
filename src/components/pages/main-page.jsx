@@ -21,9 +21,8 @@ const renderModal = ({ modalShown, closeModal }) => {
 };
 
 const MainPage = ({
-  addData, addUser, showModal, closeModal, modalShown, loading, setLoading,
+  addData, addUser, showModal, closeModal, modalShown, setLoading,
 }) => {
-  console.log('loading', loading);
   const history = useHistory();
   const auth = useAuth();
 
@@ -44,19 +43,19 @@ const MainPage = ({
         throw err;
       }
     }
-  }, [loading]);
+  }, []);
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
       <div className="row h-100 bg-white flex-md-row">
         <ChannelsContainer onShowAddModal={() => showModal({ modalName: 'adding', id: null })} />
-        <MessagesContainer loading={loading} />
+        <MessagesContainer />
         {renderModal({ modalShown, closeModal })}
       </div>
     </div>
   );
 };
 
-const mapStateToProps = ({ modalShown, loading }) => ({ modalShown, loading });
+const mapStateToProps = ({ modalShown }) => ({ modalShown });
 
 export default connect(mapStateToProps, actions)(MainPage);
