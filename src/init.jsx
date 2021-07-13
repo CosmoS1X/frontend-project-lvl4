@@ -27,27 +27,18 @@ const rollbar = new Rollbar({
   captureUnhandledRejections: true,
 });
 
-i18n.use(initReactI18next).init({
-  lng: 'ru',
-  fallbackLng: 'ru',
-  interpolation: {
-    escapeValue: false,
-  },
-  resources,
-});
-
 export default (socket) => {
-  const initialState = {
-    currentUser: null,
-    channels: [],
-    currentChannelId: 1,
-    messages: [],
-    modalShown: { modalName: null, id: null },
-  };
+  i18n.use(initReactI18next).init({
+    lng: 'ru',
+    fallbackLng: 'ru',
+    interpolation: {
+      escapeValue: false,
+    },
+    resources,
+  });
 
   const store = createStore(
     reducer,
-    initialState,
     applyMiddleware(thunk),
   );
 

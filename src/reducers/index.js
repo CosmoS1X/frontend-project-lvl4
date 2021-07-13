@@ -1,4 +1,6 @@
 import update from 'immutability-helper';
+import { handleActions } from 'redux-actions';
+import * as actions from '../actions/index.js';
 
 const renameChannel = ({ channels }, payload) => {
   const index = channels.findIndex((item) => item.id === payload.id);
@@ -9,34 +11,52 @@ const deleteChannel = ({ channels }, { id }) => channels.filter((item) => item.i
 
 const deleteMessages = ({ messages }, { id }) => messages.filter((item) => item.channelId !== id);
 
-const reducer = (state, { type, payload }) => {
-  switch (type) {
-    case 'ADD_DATA':
-      return { ...state, ...payload };
-    case 'UPDATE_MESSAGES':
-      return { ...state, messages: [...state.messages, payload] };
-    case 'CHANGE_CHANNEL':
-      return { ...state, currentChannelId: payload };
-    case 'ADD_CHANNEL':
-      return { ...state, channels: [...state.channels, payload], currentChannelId: payload.id };
-    case 'RENAME_CHANNEL':
-      return { ...state, channels: renameChannel(state, payload) };
-    case 'REMOVE_CHANNEL':
-      return {
-        ...state,
-        channels: deleteChannel(state, payload),
-        messages: deleteMessages(state, payload),
-        currentChannelId: 1,
-      };
-    case 'ADD_USER':
-      return { ...state, currentUser: payload };
-    case 'SHOW_MODAL':
-      return { ...state, modalShown: payload };
-    case 'CLOSE_MODAL':
-      return { ...state, modalShown: { modalName: null, id: null } };
-    default:
-      return state;
-  }
-};
+const reducer = handleActions({
+  [actions.addData](state, { payload }) {
+    return { ...state, ...payload };
+  },
+  [actions.addUser](state, { payload }) {
+    return { ...state, currentUser: payload };
+  },
+  [actions.updateMessages](state, { payload }) {
+    return { ...state, messages: [...state.messages, payload] };
+  },
+  [actions.changeChannel](state, { payload }) {
+    return { ...state, currentChannelId: payload };
+  },
+  [actions.showModal](state, { payload }) {
+    return { ...state, modalShown: payload };
+  },
+  [actions.closeModal](state) {
+    return { ...state, modalShown: { modalName: null, id: null } };
+  },
+  [actions.addChannel](state, { payload }) {
+    return {
+      ...state,
+      channels: [...state.channels, payload],
+      currentChannelId: payload.id,
+    };
+  },
+  [actions.renameChannel](state, { payload }) {
+    return {
+      ...state,
+      channels: renameChannel(state, payload),
+    };
+  },
+  [actions.removeChannel](state, { payload }) {
+    return {
+      ...state,
+      channels: deleteChannel(state, payload),
+      messages: deleteMessages(state, payload),
+      currentChannelId: 1,
+    };
+  },
+}, {
+  currentUser: null,
+  channels: [],
+  currentChannelId: 1,
+  messages: [],
+  modalShown: { modalName: null, id: null },
+});
 
 export default reducer;
