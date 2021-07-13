@@ -100,7 +100,7 @@ const SignupForm = () => {
             (formik.errors.confirmPassword && formik.touched.confirmPassword) || signupFailed
           }
         />
-        <Form.Label htmlFor="password">{t('confirmPassword')}</Form.Label>
+        <Form.Label htmlFor="confirmPassword">{t('confirmPassword')}</Form.Label>
         {formik.errors.confirmPassword ? <div className="invalid-tooltip">{formik.errors.confirmPassword}</div> : null}
         {signupFailed ? <div className="invalid-tooltip">{t('errors.userExists')}</div> : null}
       </Form.Group>
