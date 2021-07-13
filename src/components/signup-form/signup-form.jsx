@@ -68,7 +68,7 @@ const SignupForm = () => {
           ref={inputRef}
         />
         <Form.Label htmlFor="username">{t('username')}</Form.Label>
-        <Form.Control.Feedback type="invalid">{formik.errors.username}</Form.Control.Feedback>
+        {formik.errors.username ? <div className="invalid-tooltip">{formik.errors.username}</div> : null}
       </Form.Group>
       <Form.Group className="form-floating mb-3">
         <Form.Control
@@ -84,7 +84,7 @@ const SignupForm = () => {
           isInvalid={(formik.errors.password && formik.touched.password) || signupFailed}
         />
         <Form.Label htmlFor="password">{t('password')}</Form.Label>
-        <Form.Control.Feedback type="invalid">{formik.errors.password}</Form.Control.Feedback>
+        {formik.errors.password ? <div className="invalid-tooltip">{formik.errors.password}</div> : null}
       </Form.Group>
       <Form.Group className="form-floating mb-4">
         <Form.Control
@@ -101,9 +101,8 @@ const SignupForm = () => {
           }
         />
         <Form.Label htmlFor="password">{t('confirmPassword')}</Form.Label>
-        <Form.Control.Feedback type="invalid">
-          {signupFailed ? t('errors.userExists') : formik.errors.confirmPassword}
-        </Form.Control.Feedback>
+        {formik.errors.confirmPassword ? <div className="invalid-tooltip">{formik.errors.confirmPassword}</div> : null}
+        {signupFailed ? <div className="invalid-tooltip">{t('errors.userExists')}</div> : null}
       </Form.Group>
       <Button className="w-100" type="submit" variant="outline-primary">
         {t('registrationButton')}
