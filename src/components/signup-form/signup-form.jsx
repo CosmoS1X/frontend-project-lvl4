@@ -41,7 +41,7 @@ const SignupForm = () => {
         const response = await axios.post(routes.signupPath(), { username, password });
         localStorage.setItem('userId', JSON.stringify(response.data));
         auth.logIn();
-        history.replace('/');
+        history.push('/');
       } catch (err) {
         if (err.isAxiosError && err.response.status === 409) {
           setSignupFailed(true);

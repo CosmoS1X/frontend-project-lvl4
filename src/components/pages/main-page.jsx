@@ -8,6 +8,7 @@ import MessagesContainer from '../messages-container';
 import * as actions from '../../actions';
 import routes from '../../routes.js';
 import getModal from '../modals';
+import { useAuth } from '../../hooks';
 
 const renderModal = ({ modalShown, closeModal }) => {
   const { modalName } = modalShown;
@@ -23,19 +24,21 @@ const MainPage = ({
   addData, addUser, showModal, closeModal, modalShown,
 }) => {
   const history = useHistory();
+  const auth = useAuth();
 
   useEffect(async () => {
     const userId = JSON.parse(localStorage.getItem('userId'));
 
     if (userId && userId.token) {
-      const { data } = await axios.get(routes.usersPath(), { headers: { Authorization: `Bearer ${userId.token}` } });
-      addUser(userId.username);
-      addData(data);
-
-      return;
+      try {
+        const { data } = await axios.get(routes.usersPath(), { headers: { Authorization: `Bearer ${userId.token}` } });
+        addUser(userId.username);
+        addData(data);
+      } catch {
+        auth.logOut();
+        history.push('/login');
+      }
     }
-
-    history.push('/login');
   }, []);
 
   return (

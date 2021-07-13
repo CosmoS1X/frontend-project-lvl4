@@ -20,15 +20,15 @@ if (!production) {
   localStorage.debug = 'chat:*';
 }
 
-const rollbar = new Rollbar({
-  enable: production,
-  accessToken: 'b6de70c72c5947e8b1447aed96bf84bc',
-  captureUncaught: true,
-  captureUnhandledRejections: true,
-});
-
 export default (socket) => {
-  i18n.use(initReactI18next).init({
+  const rollbar = new Rollbar({
+    enable: production,
+    accessToken: 'b6de70c72c5947e8b1447aed96bf84bc',
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+  });
+
+  i18n.createInstance().use(initReactI18next).init({
     lng: 'ru',
     fallbackLng: 'ru',
     interpolation: {
