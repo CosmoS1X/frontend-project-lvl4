@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
@@ -25,6 +25,7 @@ const MainPage = ({
 }) => {
   const history = useHistory();
   const auth = useAuth();
+  const [loading, setLoading] = useState(true);
 
   useEffect(async () => {
     const userId = JSON.parse(localStorage.getItem('userId'));
@@ -34,6 +35,7 @@ const MainPage = ({
         const { data } = await axios.get(routes.usersPath(), { headers: { Authorization: `Bearer ${userId.token}` } });
         addUser(userId.username);
         addData(data);
+        setLoading(false);
       } catch {
         auth.logOut();
         history.push('/login');
@@ -45,7 +47,7 @@ const MainPage = ({
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
       <div className="row h-100 bg-white flex-md-row">
         <ChannelsContainer onShowAddModal={() => showModal({ modalName: 'adding', id: null })} />
-        <MessagesContainer />
+        <MessagesContainer loading={loading} />
         {renderModal({ modalShown, closeModal })}
       </div>
     </div>

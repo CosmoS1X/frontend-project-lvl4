@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import { Spinner } from 'react-bootstrap';
 
 import * as actions from '../../actions';
 import Message from '../message';
@@ -30,6 +31,7 @@ const MessagesContainer = ({
   channels,
   messages,
   currentChannelId,
+  loading,
 }) => {
   const { t } = useTranslation();
 
@@ -49,7 +51,7 @@ const MessagesContainer = ({
           </span>
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5">
-          {renderMessages(messages, currentChannelId)}
+          {loading ? <Spinner animation="border" variant="primary" /> : renderMessages(messages, currentChannelId)}
         </div>
         <div className="mt-auto px-5 py-3">
           <ChatForm />
