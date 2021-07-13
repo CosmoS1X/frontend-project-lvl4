@@ -39,23 +39,23 @@ const PrivateRoute = ({ path, children }) => {
   );
 };
 
-const App = ({ socket }) => (
+const App = ({ socketApi }) => (
   <AuthProvider>
-    <Router>
-      <div className="d-flex flex-column h-100">
-        <Header />
-        <Switch>
-          <PrivateRoute path="/" exact>
-            <socketContext.Provider value={socket}>
+    <socketContext.Provider value={socketApi}>
+      <Router>
+        <div className="d-flex flex-column h-100">
+          <Header />
+          <Switch>
+            <PrivateRoute path="/" exact>
               <MainPage />
-            </socketContext.Provider>
-          </PrivateRoute>
-          <Route path="/login" component={LoginPage} />
-          <Route path="/signup" component={SignUpPage} />
-          <Route component={NotFoundPage} />
-        </Switch>
-      </div>
-    </Router>
+            </PrivateRoute>
+            <Route path="/login" component={LoginPage} />
+            <Route path="/signup" component={SignUpPage} />
+            <Route component={NotFoundPage} />
+          </Switch>
+        </div>
+      </Router>
+    </socketContext.Provider>
   </AuthProvider>
 );
 

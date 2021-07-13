@@ -75,7 +75,7 @@ export default async (socket) => {
   return (
     <Provider store={store}>
       <ErrorBoundary rollbar={rollbar}>
-        <App socket={socketApi} />
+        <App socketApi={socketApi} />
       </ErrorBoundary>
     </Provider>
   );
