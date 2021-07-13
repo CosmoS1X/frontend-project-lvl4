@@ -27,8 +27,8 @@ const rollbar = new Rollbar({
   captureUnhandledRejections: true,
 });
 
-export default (socket) => {
-  i18n.use(initReactI18next).init({
+export default async (socket) => {
+  await i18n.use(initReactI18next).init({
     lng: 'ru',
     fallbackLng: 'ru',
     interpolation: {
