@@ -17,3 +17,5 @@ export const addUser = createAction('ADD_USER');
 export const showModal = createAction('SHOW_MODAL');
 
 export const closeModal = createAction('CLOSE_MODAL');
+
+export const setLoading = createAction('SET_LOADING');

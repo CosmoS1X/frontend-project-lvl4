@@ -51,12 +51,16 @@ const reducer = handleActions({
       currentChannelId: 1,
     };
   },
+  [actions.setLoading](state, { payload }) {
+    return { ...state, loading: payload };
+  },
 }, {
   currentUser: null,
   channels: [],
   currentChannelId: 1,
   messages: [],
   modalShown: { modalName: null, id: null },
+  loading: true,
 });
 
 export default reducer;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
@@ -21,11 +21,11 @@ const renderModal = ({ modalShown, closeModal }) => {
 };
 
 const MainPage = ({
-  addData, addUser, showModal, closeModal, modalShown,
+  addData, addUser, showModal, closeModal, modalShown, loading, setLoading,
 }) => {
+  console.log('loading', loading);
   const history = useHistory();
   const auth = useAuth();
-  const [loading, setLoading] = useState(true);
 
   useEffect(async () => {
     const userId = JSON.parse(localStorage.getItem('userId'));
@@ -36,9 +36,12 @@ const MainPage = ({
         addUser(userId.username);
         addData(data);
         setLoading(false);
-      } catch {
-        auth.logOut();
-        history.push('/login');
+      } catch (err) {
+        if (err.isAxiosError && err.response.status === 401) {
+          auth.logOut();
+          history.push('/login');
+        }
+        throw err;
       }
     }
   }, [loading]);
@@ -54,6 +57,6 @@ const MainPage = ({
   );
 };
 
-const mapStateToProps = ({ modalShown }) => ({ modalShown });
+const mapStateToProps = ({ modalShown, loading }) => ({ modalShown, loading });
 
 export default connect(mapStateToProps, actions)(MainPage);
