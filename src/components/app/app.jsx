@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import {
   BrowserRouter as Router, Route, Switch, Redirect,
 } from 'react-router-dom';
+import axios from 'axios';
 import {
   NotFoundPage, MainPage, LoginPage, SignUpPage,
 } from '../pages';
@@ -18,9 +19,20 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem('userId');
     setLoggedIn(false);
   };
+  const getToken = async (route, data) => {
+    const response = await axios.post(route, data);
+    localStorage.setItem('userId', JSON.stringify(response.data));
+  };
+
+  const value = {
+    loggedIn,
+    logIn,
+    logOut,
+    getToken,
+  };
 
   return (
-    <authContext.Provider value={{ loggedIn, logIn, logOut }}>
+    <authContext.Provider value={value}>
       {children}
     </authContext.Provider>
   );

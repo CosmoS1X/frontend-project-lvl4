@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import routes from '../../routes.js';
 import { useAuth } from '../../hooks';
-import getToken from '../../getToken.js';
 
 const SignupForm = () => {
   const { t } = useTranslation();
@@ -38,7 +37,7 @@ const SignupForm = () => {
     onSubmit: async ({ username, password }) => {
       setSignupFailed(false);
       try {
-        await getToken(routes.signupPath(), { username, password });
+        await auth.getToken(routes.signupPath(), { username, password });
         auth.logIn();
         history.push('/');
       } catch (err) {

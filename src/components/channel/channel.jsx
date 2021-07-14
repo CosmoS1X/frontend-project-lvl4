@@ -10,6 +10,10 @@ const Channel = ({
   const { t } = useTranslation();
   const buttonVariant = id === currentChannel ? 'secondary' : 'light';
 
+  const handleShowModal = (modalName) => {
+    showModal({ modalName, id });
+  };
+
   return (
     <li className="nav-item w-100">
       <Dropdown as={ButtonGroup} className="d-flex">
@@ -27,10 +31,10 @@ const Channel = ({
             <Dropdown.Toggle split variant={buttonVariant} className="flex-grow-0" />
 
             <Dropdown.Menu>
-              <Dropdown.Item href="#" onClick={() => showModal({ modalName: 'remove', id })}>
+              <Dropdown.Item href="#" onClick={() => handleShowModal('remove')}>
                 {t('buttons.delete')}
               </Dropdown.Item>
-              <Dropdown.Item href="#" onClick={() => showModal({ modalName: 'rename', id })}>
+              <Dropdown.Item href="#" onClick={() => handleShowModal('rename')}>
                 {t('buttons.rename')}
               </Dropdown.Item>
             </Dropdown.Menu>

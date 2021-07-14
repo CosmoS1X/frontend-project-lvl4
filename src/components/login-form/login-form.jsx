@@ -5,7 +5,6 @@ import { Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import routes from '../../routes.js';
 import { useAuth } from '../../hooks';
-import getToken from '../../getToken.js';
 
 const LoginForm = () => {
   const { t } = useTranslation();
@@ -26,7 +25,7 @@ const LoginForm = () => {
     onSubmit: async (values) => {
       setAuthFailed(false);
       try {
-        await getToken(routes.loginPath(), values);
+        await auth.getToken(routes.loginPath(), values);
         auth.logIn();
         history.push('/');
       } catch (err) {

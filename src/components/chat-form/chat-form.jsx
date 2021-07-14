@@ -58,15 +58,11 @@ const ChatForm = ({
 };
 
 const mapStateToProps = ({
-  channels,
   currentChannelId,
   currentUser,
-  messages,
 }) => ({
-  channels,
   currentChannelId,
   currentUser,
-  messages,
 });
 
 export default connect(mapStateToProps, actions)(ChatForm);
