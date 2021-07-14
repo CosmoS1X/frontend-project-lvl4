@@ -42,19 +42,24 @@ export default async (socket) => {
     applyMiddleware(thunk),
   );
 
+  const withAcknowledgement = (actionName) => (data) => {
+    const messages = {
+      newMessage: 'Status of sending the message:',
+      newChannel: 'Channel creation status:',
+      renameChannel: 'Channel renaming status:',
+      removeChannel: 'Channel removing status:',
+    };
+
+    return socket.volatile.emit(actionName, data, (res) => {
+      console.log(messages[actionName], res.status);
+    });
+  };
+
   const socketApi = {
-    sendMessage: (data) => socket.volatile.emit('newMessage', data, (res) => {
-      console.log('Status of sending the message:', res.status);
-    }),
-    createChannel: (data) => socket.volatile.emit('newChannel', data, (res) => {
-      console.log('Channel creation status:', res.status);
-    }),
-    renameChannel: (data) => socket.volatile.emit('renameChannel', data, (res) => {
-      console.log('Channel renaming status:', res.status);
-    }),
-    removeChannel: (data) => socket.volatile.emit('removeChannel', data, (res) => {
-      console.log('Channel removing status:', res.status);
-    }),
+    sendMessage: (data) => withAcknowledgement('newMessage')(data),
+    createChannel: (data) => withAcknowledgement('newChannel')(data),
+    renameChannel: (data) => withAcknowledgement('renameChannel')(data),
+    removeChannel: (data) => withAcknowledgement('removeChannel')(data),
   };
 
   /* eslint-disable react/destructuring-assignment */
