@@ -1,11 +1,10 @@
-import Add from './Add.jsx';
-import Remove from './Remove.jsx';
-import Rename from './Rename.jsx';
+import Remove from './remove.jsx';
+import AddRename from './add-rename.jsx';
 
 const modals = {
-  adding: Add,
-  removing: Remove,
-  renaming: Rename,
+  add: AddRename,
+  remove: Remove,
+  rename: AddRename,
 };
 
 export default (modalName) => modals[modalName];

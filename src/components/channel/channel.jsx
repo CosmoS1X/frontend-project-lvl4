@@ -27,10 +27,10 @@ const Channel = ({
             <Dropdown.Toggle split variant={buttonVariant} className="flex-grow-0" />
 
             <Dropdown.Menu>
-              <Dropdown.Item href="#" onClick={() => showModal({ modalName: 'removing', id })}>
+              <Dropdown.Item href="#" onClick={() => showModal({ modalName: 'remove', id })}>
                 {t('buttons.delete')}
               </Dropdown.Item>
-              <Dropdown.Item href="#" onClick={() => showModal({ modalName: 'renaming', id })}>
+              <Dropdown.Item href="#" onClick={() => showModal({ modalName: 'rename', id })}>
                 {t('buttons.rename')}
               </Dropdown.Item>
             </Dropdown.Menu>

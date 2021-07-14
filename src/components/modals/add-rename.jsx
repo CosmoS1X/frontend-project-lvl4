@@ -6,15 +6,20 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useSocket } from '../../hooks';
 
-const Add = ({
-  modalShown: { modalName }, onHide, channels,
-}) => {
+const AddRename = ({ modalShown: { modalName, id }, onHide, channels }) => {
   const inputRef = useRef();
-  const socket = useSocket();
+  const socketApi = useSocket();
   const { t } = useTranslation();
 
+  const currentChannel = channels.find((channel) => channel.id === id);
+
+  const modalActions = {
+    add: socketApi.createChannel,
+    rename: socketApi.renameChannel,
+  };
+
   const formik = useFormik({
-    initialValues: { name: '' },
+    initialValues: { name: currentChannel?.name || '' },
     validationSchema: Yup.object({
       name: Yup.string()
         .required(t('errors.required'))
@@ -23,23 +28,19 @@ const Add = ({
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: async (values) => {
-      await socket.createChannel(values);
+      await modalActions[modalName]({ ...values, id });
       onHide();
     },
   });
 
   useEffect(() => {
-    inputRef.current.focus();
-
-    return () => {
-      formik.resetForm();
-    };
+    inputRef.current.select();
   }, []);
 
   return (
-    <Modal show={modalName === 'adding'} onHide={onHide} centered>
+    <Modal show onHide={onHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>{t('modals.add')}</Modal.Title>
+        <Modal.Title>{t(`modals.${modalName}`)}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -48,7 +49,7 @@ const Add = ({
             <Form.Control
               className="mb-2"
               name="name"
-              data-testid="add-channel"
+              data-testid={`${modalName}-channel`}
               onChange={formik.handleChange}
               value={formik.values.name}
               ref={inputRef}
@@ -70,4 +71,4 @@ const Add = ({
 
 const mapStateToProps = ({ channels, modalShown }) => ({ channels, modalShown });
 
-export default connect(mapStateToProps)(Add);
+export default connect(mapStateToProps)(AddRename);

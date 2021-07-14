@@ -3,17 +3,17 @@ import { Modal, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useSocket } from '../../hooks';
 
-const removeChannel = async (socket, id, onHide) => {
-  await socket.removeChannel(id);
+const removeChannel = async (socketApi, id, onHide) => {
+  await socketApi.removeChannel(id);
   onHide();
 };
 
 const Remove = ({ modalShown: { modalName, id }, onHide }) => {
-  const socket = useSocket();
+  const socketApi = useSocket();
   const { t } = useTranslation();
 
   return (
-    <Modal show={modalName === 'removing'} onHide={onHide} centered>
+    <Modal show={modalName === 'remove'} onHide={onHide} centered>
       <Modal.Header closeButton>
         <Modal.Title>{t('modals.delete')}</Modal.Title>
       </Modal.Header>
@@ -22,7 +22,7 @@ const Remove = ({ modalShown: { modalName, id }, onHide }) => {
         <p className="lead">{t('confirmDeletion')}</p>
         <div className="d-flex justify-content-end">
           <Button variant="secondary" className="me-2" onClick={onHide}>{t('buttons.cancel')}</Button>
-          <Button variant="danger" onClick={() => removeChannel(socket, { id }, onHide)}>{t('buttons.delete')}</Button>
+          <Button variant="danger" onClick={() => removeChannel(socketApi, { id }, onHide)}>{t('buttons.delete')}</Button>
         </div>
       </Modal.Body>
     </Modal>

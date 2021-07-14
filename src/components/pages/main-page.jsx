@@ -48,7 +48,7 @@ const MainPage = ({
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
       <div className="row h-100 bg-white flex-md-row">
-        <ChannelsContainer onShowAddModal={() => showModal({ modalName: 'adding', id: null })} />
+        <ChannelsContainer onShowAddModal={() => showModal({ modalName: 'add', id: null })} />
         <MessagesContainer />
         {renderModal({ modalShown, closeModal })}
       </div>

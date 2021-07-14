@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import Rollbar from 'rollbar';
+// import Rollbar from 'rollbar';
 import 'bootstrap';
 
 import App from './components/app';
@@ -20,12 +20,12 @@ if (!production) {
   localStorage.debug = 'chat:*';
 }
 
-const rollbar = new Rollbar({
-  enable: production,
-  accessToken: 'b6de70c72c5947e8b1447aed96bf84bc',
-  captureUncaught: true,
-  captureUnhandledRejections: true,
-});
+// const rollbar = new Rollbar({
+//   enable: production,
+//   accessToken: 'b6de70c72c5947e8b1447aed96bf84bc',
+//   captureUncaught: true,
+//   captureUnhandledRejections: true,
+// });
 
 export default async (socket) => {
   await i18n.use(initReactI18next).init({
@@ -72,9 +72,10 @@ export default async (socket) => {
   });
   /* eslint-enable */
 
+  // rollbar={rollbar} into ErrorBoundary
   return (
     <Provider store={store}>
-      <ErrorBoundary rollbar={rollbar}>
+      <ErrorBoundary>
         <App socketApi={socketApi} />
       </ErrorBoundary>
     </Provider>
