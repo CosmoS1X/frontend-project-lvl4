@@ -7,6 +7,21 @@ import * as Yup from 'yup';
 import routes from '../../routes.js';
 import { useAuth } from '../../hooks';
 
+const makeSchema = () => {
+  const { t } = useTranslation();
+
+  return Yup.object({
+    username: Yup.string()
+      .required(t('errors.required'))
+      .min(3, t('errors.lengthLimits'))
+      .max(20, t('errors.lengthLimits')),
+    password: Yup.string().required(t('errors.required')).min(6, t('errors.noLessThan')),
+    confirmPassword: Yup.string()
+      .required(t('errors.required'))
+      .oneOf([Yup.ref('password'), null], t('errors.mustMatch')),
+  });
+};
+
 const SignupForm = () => {
   const { t } = useTranslation();
   const inputRef = useRef();
@@ -24,16 +39,7 @@ const SignupForm = () => {
       password: '',
       confirmPassword: '',
     },
-    validationSchema: Yup.object({
-      username: Yup.string()
-        .required(t('errors.required'))
-        .min(3, t('errors.lengthLimits'))
-        .max(20, t('errors.lengthLimits')),
-      password: Yup.string().required(t('errors.required')).min(6, t('errors.noLessThan')),
-      confirmPassword: Yup.string()
-        .required(t('errors.required'))
-        .oneOf([Yup.ref('password'), null], t('errors.mustMatch')),
-    }),
+    validationSchema: makeSchema(),
     onSubmit: async ({ username, password }) => {
       setSignupFailed(false);
       try {
