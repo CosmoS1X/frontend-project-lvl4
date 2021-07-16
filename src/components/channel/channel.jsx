@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { connect } from 'react-redux';
 import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -8,10 +8,12 @@ const Channel = ({
   id, name, removable, currentChannel, onChangeChannel, showModal,
 }) => {
   const { t } = useTranslation();
+  const buttonRef = useRef();
   const buttonVariant = id === currentChannel ? 'secondary' : 'light';
 
   const handleShowModal = (modalName) => {
     showModal({ modalName, id });
+    buttonRef.current.blur();
   };
 
   return (
@@ -34,7 +36,7 @@ const Channel = ({
               <Dropdown.Item href="#" onClick={() => handleShowModal('remove')}>
                 {t('buttons.delete')}
               </Dropdown.Item>
-              <Dropdown.Item href="#" onClick={() => handleShowModal('rename')}>
+              <Dropdown.Item href="#" ref={buttonRef} onClick={() => handleShowModal('rename')}>
                 {t('buttons.rename')}
               </Dropdown.Item>
             </Dropdown.Menu>
