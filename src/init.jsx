@@ -2,8 +2,7 @@ import React from 'react';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
+import { I18nextProvider } from 'react-i18next';
 import Rollbar from 'rollbar';
 import 'bootstrap';
 
@@ -11,7 +10,7 @@ import App from './components/app';
 import ErrorBoundary from './components/error-boundary';
 import reducer from './reducers';
 import * as actions from './actions';
-import resources from './locales';
+import i18n from './i18n';
 import '../assets/application.scss';
 
 const production = process.env.NODE_ENV === 'production';
@@ -27,16 +26,7 @@ const rollbar = new Rollbar({
   captureUnhandledRejections: true,
 });
 
-export default async (socket) => {
-  await i18n.use(initReactI18next).init({
-    lng: 'ru',
-    fallbackLng: 'ru',
-    interpolation: {
-      escapeValue: false,
-    },
-    resources,
-  });
-
+export default (socket) => {
   const store = createStore(
     reducer,
     applyMiddleware(thunk),
@@ -80,7 +70,9 @@ export default async (socket) => {
   return (
     <Provider store={store}>
       <ErrorBoundary rollbar={rollbar}>
-        <App socketApi={socketApi} />
+        <I18nextProvider i18n={i18n}>
+          <App socketApi={socketApi} />
+        </I18nextProvider>
       </ErrorBoundary>
     </Provider>
   );
