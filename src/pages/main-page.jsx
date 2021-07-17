@@ -25,24 +25,28 @@ const MainPage = ({
   const history = useHistory();
   const auth = useAuth();
 
-  useEffect(async () => {
-    const userData = auth.getUserData();
+  useEffect(() => {
+    const fetchData = async () => {
+      const userData = auth.getUserData();
 
-    if (userData && userData.token) {
-      try {
-        const { data } = await auth.getData(userData.token);
-        addUser(userData.username);
-        addData(data);
-        setLoading(false);
-      } catch (err) {
-        if (err.isAxiosError && err.response.status === 401) {
-          auth.logOut();
-          history.push(routes.loginPage());
+      if (userData && userData.token) {
+        try {
+          const { data } = await auth.getData(userData.token);
+          addUser(userData.username);
+          addData(data);
+          setLoading(false);
+        } catch (err) {
+          if (err.isAxiosError && err.response.status === 401) {
+            auth.logOut();
+            history.push(routes.loginPage());
+          }
+          throw err;
         }
-        throw err;
       }
-    }
-  }, []);
+    };
+
+    fetchData();
+  }, [addData, addUser, setLoading, auth, history]);
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
