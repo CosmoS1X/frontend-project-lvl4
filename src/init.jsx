@@ -21,7 +21,7 @@ if (!production) {
 
 const rollbar = new Rollbar({
   enable: production,
-  accessToken: 'b6de70c72c5947e8b1447aed96bf84bc',
+  accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
   captureUncaught: true,
   captureUnhandledRejections: true,
 });
