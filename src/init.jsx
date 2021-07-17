@@ -1,7 +1,6 @@
 import React from 'react';
-import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
+import { configureStore } from '@reduxjs/toolkit';
 import { I18nextProvider } from 'react-i18next';
 import Rollbar from 'rollbar';
 import 'bootstrap';
@@ -27,10 +26,9 @@ const rollbar = new Rollbar({
 });
 
 const init = (socket) => {
-  const store = createStore(
+  const store = configureStore({
     reducer,
-    applyMiddleware(thunk),
-  );
+  });
 
   const withAcknowledgement = (actionName) => (data) => {
     const messages = {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { Spinner } from 'react-bootstrap';
 
 import * as actions from '../../actions';
@@ -34,6 +34,8 @@ const MessagesContainer = ({
   loading,
 }) => {
   const { t } = useTranslation();
+  const count = useSelector((state) => state.messages
+    .filter(({ channelId }) => channelId === currentChannelId).length);
 
   return (
     <div className="col p-0 h-100">
@@ -47,7 +49,7 @@ const MessagesContainer = ({
             </b>
           </p>
           <span className="text-muted">
-            {t('message', { count: messages.filter(({ channelId }) => channelId === currentChannelId).length })}
+            {t('message', { count })}
           </span>
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5">

@@ -8,12 +8,12 @@ const removeChannel = async (socketApi, id, onHide) => {
   onHide();
 };
 
-const Remove = ({ modalShown: { modalName, id }, onHide }) => {
+const Remove = ({ modalShown: { id }, onHide }) => {
   const socketApi = useSocket();
   const { t } = useTranslation();
 
   return (
-    <Modal show={modalName === 'remove'} onHide={onHide} centered>
+    <Modal show onHide={onHide} centered>
       <Modal.Header closeButton>
         <Modal.Title>{t('modals.delete')}</Modal.Title>
       </Modal.Header>

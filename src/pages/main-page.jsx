@@ -16,7 +16,7 @@ const renderModal = ({ modalShown, closeModal }) => {
   }
 
   const Component = getModal(modalName);
-  return <Component modalShown={modalShown} onHide={closeModal} />;
+  return <Component modalShown={modalShown} onHide={() => closeModal({ modalName: 'remove', id: null })} />;
 };
 
 const MainPage = ({
