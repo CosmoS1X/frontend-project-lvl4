@@ -10,6 +10,8 @@ extends:
   - airbnb
   - "plugin:functional/external-recommended"
   - "plugin:functional/recommended"
+  - "plugin:react/recommended"
+  - "plugin:react-hooks/recommended"
 
 parser: babel-eslint
 
@@ -25,6 +27,7 @@ settings:
 
 rules:
   import/extensions: 0
+  import/no-unresolved: 0
   react/prop-types: 0
   no-console: 0
   functional/no-conditional-statement: 0
