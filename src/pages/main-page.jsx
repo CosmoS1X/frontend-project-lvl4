@@ -1,12 +1,10 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import axios from 'axios';
 
 import ChannelsContainer from '../components/channels-container';
 import MessagesContainer from '../components/messages-container';
 import * as actions from '../actions';
-import routes from '../routes.js';
 import getModal from '../components/modals';
 import { useAuth } from '../hooks';
 
@@ -27,12 +25,12 @@ const MainPage = ({
   const auth = useAuth();
 
   useEffect(async () => {
-    const userId = JSON.parse(localStorage.getItem('userId'));
+    const userData = auth.getUserData();
 
-    if (userId && userId.token) {
+    if (userData && userData.token) {
       try {
-        const { data } = await axios.get(routes.usersPath(), { headers: { Authorization: `Bearer ${userId.token}` } });
-        addUser(userId.username);
+        const { data } = await auth.getData(userData.token);
+        addUser(userData.username);
         addData(data);
         setLoading(false);
       } catch (err) {

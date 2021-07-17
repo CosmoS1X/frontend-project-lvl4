@@ -8,27 +8,35 @@ import {
 } from '../../pages';
 import Header from '../header';
 import { socketContext, authContext } from '../../contexts';
+import routes from '../../routes.js';
 
 const AuthProvider = ({ children }) => {
-  const userId = JSON.parse(localStorage.getItem('userId'));
-  const hasToken = userId && userId.token;
+  const userData = JSON.parse(localStorage.getItem('userData'));
+  const hasToken = userData && userData.token;
   const [loggedIn, setLoggedIn] = useState(hasToken);
 
   const logIn = () => setLoggedIn(true);
   const logOut = () => {
-    localStorage.removeItem('userId');
+    localStorage.removeItem('userData');
     setLoggedIn(false);
   };
   const getToken = async (route, data) => {
     const response = await axios.post(route, data);
-    localStorage.setItem('userId', JSON.stringify(response.data));
+    localStorage.setItem('userData', JSON.stringify(response.data));
   };
+  const getData = async (token) => {
+    const data = await axios.get(routes.usersPath(), { headers: { Authorization: `Bearer ${token}` } });
+    return data;
+  };
+  const getUserData = () => JSON.parse(localStorage.getItem('userData'));
 
   const value = {
     loggedIn,
     logIn,
     logOut,
     getToken,
+    getData,
+    getUserData,
   };
 
   return (
