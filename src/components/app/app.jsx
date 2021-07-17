@@ -5,7 +5,7 @@ import {
 import axios from 'axios';
 import {
   NotFoundPage, MainPage, LoginPage, SignUpPage,
-} from '../pages';
+} from '../../pages';
 import Header from '../header';
 import { socketContext, authContext } from '../../contexts';
 

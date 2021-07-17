@@ -1,6 +1,6 @@
 import React from 'react';
-import LoginForm from '../login-form';
-import CardFooter from '../card-footer';
+import LoginForm from '../components/login-form';
+import CardFooter from '../components/card-footer';
 import loginIcon from './login-icon.jpeg';
 
 const LoginPage = () => (

@@ -3,12 +3,12 @@ import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-import ChannelsContainer from '../channels-container';
-import MessagesContainer from '../messages-container';
-import * as actions from '../../actions';
-import routes from '../../routes.js';
-import getModal from '../modals';
-import { useAuth } from '../../hooks';
+import ChannelsContainer from '../components/channels-container';
+import MessagesContainer from '../components/messages-container';
+import * as actions from '../actions';
+import routes from '../routes.js';
+import getModal from '../components/modals';
+import { useAuth } from '../hooks';
 
 const renderModal = ({ modalShown, closeModal }) => {
   const { modalName } = modalShown;

@@ -1,5 +1,5 @@
 import React from 'react';
-import SignupForm from '../signup-form';
+import SignupForm from '../components/signup-form';
 import signupIcon from './signup-icon.jpeg';
 
 const SignUpPage = () => (
