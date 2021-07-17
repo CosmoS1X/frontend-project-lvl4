@@ -53,7 +53,7 @@ const PrivateRoute = ({ path, children }) => {
     <Route
       path={path}
       render={() => (
-        auth.loggedIn ? children : <Redirect to="/login" />
+        auth.loggedIn ? children : <Redirect to={routes.loginPage()} />
       )}
     />
   );
@@ -69,8 +69,8 @@ const App = ({ socketApi }) => (
             <PrivateRoute path="/" exact>
               <MainPage />
             </PrivateRoute>
-            <Route path="/login" component={LoginPage} />
-            <Route path="/signup" component={SignUpPage} />
+            <Route path={routes.loginPage()} component={LoginPage} />
+            <Route path={routes.signUpPage()} component={SignUpPage} />
             <Route component={NotFoundPage} />
           </Switch>
         </div>

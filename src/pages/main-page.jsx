@@ -7,6 +7,7 @@ import MessagesContainer from '../components/messages-container';
 import * as actions from '../actions';
 import getModal from '../components/modals';
 import { useAuth } from '../hooks';
+import routes from '../routes.js';
 
 const renderModal = ({ modalShown, closeModal }) => {
   const { modalName } = modalShown;
@@ -36,7 +37,7 @@ const MainPage = ({
       } catch (err) {
         if (err.isAxiosError && err.response.status === 401) {
           auth.logOut();
-          history.push('/login');
+          history.push(routes.loginPage());
         }
         throw err;
       }

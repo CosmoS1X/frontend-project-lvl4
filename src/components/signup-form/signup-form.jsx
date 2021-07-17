@@ -39,7 +39,7 @@ const SignupForm = () => {
       try {
         await auth.getToken(routes.signupPath(), { username, password });
         auth.logIn();
-        history.push('/');
+        history.push(routes.mainPage());
       } catch (err) {
         if (err.isAxiosError && err.response.status === 409) {
           setSignupFailed(true);

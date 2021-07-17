@@ -27,7 +27,7 @@ const LoginForm = () => {
       try {
         await auth.getToken(routes.loginPath(), values);
         auth.logIn();
-        history.push('/');
+        history.push(routes.mainPage());
       } catch (err) {
         if (err.isAxiosError && err.response.status === 401) {
           setAuthFailed(true);
