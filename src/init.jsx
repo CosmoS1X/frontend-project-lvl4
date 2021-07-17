@@ -26,7 +26,7 @@ const rollbar = new Rollbar({
   captureUnhandledRejections: true,
 });
 
-export default (socket) => {
+const init = (socket) => {
   const store = createStore(
     reducer,
     applyMiddleware(thunk),
@@ -77,3 +77,5 @@ export default (socket) => {
     </Provider>
   );
 };
+
+export default init;
