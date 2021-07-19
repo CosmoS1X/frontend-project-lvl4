@@ -1,10 +1,3 @@
-import Remove from './remove.jsx';
-import AddRename from './add-rename.jsx';
+import Modal from './modal.jsx';
 
-const modals = {
-  add: AddRename,
-  remove: Remove,
-  rename: AddRename,
-};
-
-export default (modalName) => modals[modalName];
+export default Modal;

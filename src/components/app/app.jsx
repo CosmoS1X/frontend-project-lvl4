@@ -2,11 +2,13 @@ import React, { useState, useContext } from 'react';
 import {
   BrowserRouter as Router, Route, Switch, Redirect,
 } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 import {
   NotFoundPage, MainPage, LoginPage, SignUpPage,
 } from '../../pages';
 import Header from '../header';
+import Modal from '../modals/modal.jsx';
 import { socketContext, authContext } from '../../contexts';
 import routes from '../../routes.js';
 
@@ -59,24 +61,29 @@ const PrivateRoute = ({ path, children }) => {
   );
 };
 
-const App = ({ socketApi }) => (
-  <AuthProvider>
-    <socketContext.Provider value={socketApi}>
-      <Router>
-        <div className="d-flex flex-column h-100">
-          <Header />
-          <Switch>
-            <PrivateRoute path="/" exact>
-              <MainPage />
-            </PrivateRoute>
-            <Route path={routes.loginPage()} component={LoginPage} />
-            <Route path={routes.signUpPage()} component={SignUpPage} />
-            <Route component={NotFoundPage} />
-          </Switch>
-        </div>
-      </Router>
-    </socketContext.Provider>
-  </AuthProvider>
-);
+const App = ({ socketApi }) => {
+  const modalShown = useSelector((state) => state.modalState);
+
+  return (
+    <AuthProvider>
+      <socketContext.Provider value={socketApi}>
+        <Router>
+          <div className="d-flex flex-column h-100">
+            <Header />
+            <Modal modalShown={modalShown} />
+            <Switch>
+              <PrivateRoute path="/" exact>
+                <MainPage />
+              </PrivateRoute>
+              <Route path={routes.loginPage()} component={LoginPage} />
+              <Route path={routes.signUpPage()} component={SignUpPage} />
+              <Route component={NotFoundPage} />
+            </Switch>
+          </div>
+        </Router>
+      </socketContext.Provider>
+    </AuthProvider>
+  );
+};
 
 export default App;

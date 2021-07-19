@@ -15,7 +15,7 @@ const ChatForm = () => {
 
   useEffect(() => {
     inputRef.current.focus();
-  });
+  }, []);
 
   const formik = useFormik({
     initialValues: { body: '' },
@@ -36,6 +36,7 @@ const ChatForm = () => {
     <form noValidate className="py-1 border rounded-2" onSubmit={formik.handleSubmit}>
       <div className="input-group has-validation">
         <input
+          autoComplete="off"
           name="body"
           data-testid="new-message"
           placeholder="Введите сообщение..."

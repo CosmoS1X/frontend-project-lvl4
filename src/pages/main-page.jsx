@@ -1,30 +1,16 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import ChannelsContainer from '../components/channels-container';
 import MessagesContainer from '../components/messages-container';
-import getModal from '../components/modals';
 import { useAuth } from '../hooks';
 import routes from '../routes.js';
 import { actions } from '../reducers';
 
-const RenderModal = ({ modalShown }) => {
-  const { modalName } = modalShown;
-  const dispatch = useDispatch();
-
-  if (!modalName) {
-    return null;
-  }
-
-  const Component = getModal(modalName);
-  return <Component modalShown={modalShown} onHide={() => dispatch(actions.closeModal({ modalName: 'remove', id: null }))} />;
-};
-
 const MainPage = () => {
   const history = useHistory();
   const auth = useAuth();
-  const modalShown = useSelector((state) => state.modalState);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -56,7 +42,6 @@ const MainPage = () => {
       <div className="row h-100 bg-white flex-md-row">
         <ChannelsContainer onShowAddModal={() => dispatch(actions.showModal({ modalName: 'add', id: null }))} />
         <MessagesContainer />
-        <RenderModal modalShown={modalShown} />
       </div>
     </div>
   );

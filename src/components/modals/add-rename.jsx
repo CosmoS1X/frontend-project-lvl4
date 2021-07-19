@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +8,7 @@ import { useSocket } from '../../hooks';
 
 const AddRename = ({ modalShown: { modalName, id }, onHide }) => {
   const inputRef = useRef();
+  const [submitting, setSubmitting] = useState(false);
   const socketApi = useSocket();
   const { t } = useTranslation();
   const channels = useSelector(({ channelsState }) => channelsState.channels);
@@ -28,6 +29,7 @@ const AddRename = ({ modalShown: { modalName, id }, onHide }) => {
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: async (values) => {
+      setSubmitting(true);
       await modalActions[modalName]({ ...values, id });
       onHide();
     },
@@ -60,7 +62,7 @@ const AddRename = ({ modalShown: { modalName, id }, onHide }) => {
             </Form.Control.Feedback>
             <div className="d-flex justify-content-end">
               <Button type="button" className="me-2" variant="secondary" onClick={onHide}>{t('buttons.cancel')}</Button>
-              <Button type="submit" variant="primary">{t('buttons.send')}</Button>
+              <Button disabled={submitting} type="submit" variant="primary">{t('buttons.send')}</Button>
             </div>
           </Form.Group>
         </Form>
