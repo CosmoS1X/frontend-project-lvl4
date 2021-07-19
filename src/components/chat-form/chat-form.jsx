@@ -1,17 +1,17 @@
 import React, { useRef, useEffect } from 'react';
 import { useFormik } from 'formik';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import * as actions from '../../actions';
 import { useSocket } from '../../hooks';
 
-const ChatForm = ({
-  currentChannelId,
-  currentUser,
-}) => {
+const ChatForm = () => {
   const { t } = useTranslation();
   const inputRef = useRef();
   const socket = useSocket();
+  const { currentUser, currentChannelId } = useSelector(({ messagesState, channelsState }) => ({
+    currentUser: messagesState.currentUser,
+    currentChannelId: channelsState.currentChannelId,
+  }));
 
   useEffect(() => {
     inputRef.current.focus();
@@ -57,12 +57,4 @@ const ChatForm = ({
   );
 };
 
-const mapStateToProps = ({
-  currentChannelId,
-  currentUser,
-}) => ({
-  currentChannelId,
-  currentUser,
-});
-
-export default connect(mapStateToProps, actions)(ChatForm);
+export default ChatForm;

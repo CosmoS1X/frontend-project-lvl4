@@ -1,29 +1,31 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import ChannelsContainer from '../components/channels-container';
 import MessagesContainer from '../components/messages-container';
-import * as actions from '../actions';
 import getModal from '../components/modals';
 import { useAuth } from '../hooks';
 import routes from '../routes.js';
+import { actions } from '../reducers';
 
-const renderModal = ({ modalShown, closeModal }) => {
+const RenderModal = ({ modalShown }) => {
   const { modalName } = modalShown;
+  const dispatch = useDispatch();
+
   if (!modalName) {
     return null;
   }
 
   const Component = getModal(modalName);
-  return <Component modalShown={modalShown} onHide={() => closeModal({ modalName: 'remove', id: null })} />;
+  return <Component modalShown={modalShown} onHide={() => dispatch(actions.closeModal({ modalName: 'remove', id: null }))} />;
 };
 
-const MainPage = ({
-  addData, addUser, showModal, closeModal, modalShown, setLoading,
-}) => {
+const MainPage = () => {
   const history = useHistory();
   const auth = useAuth();
+  const modalShown = useSelector((state) => state.modalState);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,10 +33,11 @@ const MainPage = ({
 
       if (userData && userData.token) {
         try {
-          const { data } = await auth.getData(userData.token);
-          addUser(userData.username);
-          addData(data);
-          setLoading(false);
+          const { data: { channels, messages } } = await auth.getData(userData.token);
+          dispatch(actions.setUser(userData.username));
+          dispatch(actions.getChannels(channels));
+          dispatch(actions.getMessages(messages));
+          dispatch(actions.setLoading(false));
         } catch (err) {
           if (err.isAxiosError && err.response.status === 401) {
             auth.logOut();
@@ -46,19 +49,17 @@ const MainPage = ({
     };
 
     fetchData();
-  }, [addData, addUser, setLoading, auth, history]);
+  }, [auth, dispatch, history]);
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
       <div className="row h-100 bg-white flex-md-row">
-        <ChannelsContainer onShowAddModal={() => showModal({ modalName: 'add', id: null })} />
+        <ChannelsContainer onShowAddModal={() => dispatch(actions.showModal({ modalName: 'add', id: null }))} />
         <MessagesContainer />
-        {renderModal({ modalShown, closeModal })}
+        <RenderModal modalShown={modalShown} />
       </div>
     </div>
   );
 };
 
-const mapStateToProps = ({ modalShown }) => ({ modalShown });
-
-export default connect(mapStateToProps, actions)(MainPage);
+export default MainPage;

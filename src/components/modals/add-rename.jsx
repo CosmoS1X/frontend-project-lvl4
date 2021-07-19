@@ -1,16 +1,16 @@
 import React, { useEffect, useRef } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useSocket } from '../../hooks';
 
-const AddRename = ({ modalShown: { modalName, id }, onHide, channels }) => {
+const AddRename = ({ modalShown: { modalName, id }, onHide }) => {
   const inputRef = useRef();
   const socketApi = useSocket();
   const { t } = useTranslation();
-
+  const channels = useSelector(({ channelsState }) => channelsState.channels);
   const currentChannel = channels.find((channel) => channel.id === id);
 
   const modalActions = {
@@ -69,6 +69,4 @@ const AddRename = ({ modalShown: { modalName, id }, onHide, channels }) => {
   );
 };
 
-const mapStateToProps = ({ channels, modalShown }) => ({ channels, modalShown });
-
-export default connect(mapStateToProps)(AddRename);
+export default AddRename;

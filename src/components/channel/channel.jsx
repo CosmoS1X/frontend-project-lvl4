@@ -1,18 +1,19 @@
 import React, { useRef } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import * as actions from '../../actions';
+import { actions } from '../../reducers';
 
 const Channel = ({
-  id, name, removable, currentChannel, onChangeChannel, showModal,
+  id, name, removable, currentChannel, onChangeChannel,
 }) => {
   const { t } = useTranslation();
   const buttonRef = useRef();
+  const dispatch = useDispatch();
   const buttonVariant = id === currentChannel ? 'secondary' : 'light';
 
   const handleShowModal = (modalName) => {
-    showModal({ modalName, id });
+    dispatch(actions.showModal({ modalName, id }));
     buttonRef.current.blur();
   };
 
@@ -47,4 +48,4 @@ const Channel = ({
   );
 };
 
-export default connect(null, actions)(Channel);
+export default Channel;

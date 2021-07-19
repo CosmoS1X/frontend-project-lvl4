@@ -1,16 +1,16 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import * as actions from '../../actions';
 import Channel from '../channel';
+import { actions } from '../../reducers';
 
-const ChannelsContainer = ({
-  channels,
-  currentChannelId,
-  changeChannel,
-  onShowAddModal,
-}) => {
+const ChannelsContainer = ({ onShowAddModal }) => {
   const { t } = useTranslation();
+  const { channels, currentChannelId } = useSelector(({ channelsState }) => ({
+    channels: channelsState.channels,
+    currentChannelId: channelsState.currentChannelId,
+  }));
+  const dispatch = useDispatch();
 
   const renderChannel = ({ id, name, removable }) => (
     <Channel
@@ -19,7 +19,7 @@ const ChannelsContainer = ({
       name={name}
       removable={removable}
       currentChannel={currentChannelId}
-      onChangeChannel={() => changeChannel(id)}
+      onChangeChannel={() => dispatch(actions.changeChannel(id))}
     />
   );
 
@@ -53,6 +53,4 @@ const ChannelsContainer = ({
   );
 };
 
-const mapStateToProps = ({ channels, currentChannelId }) => ({ channels, currentChannelId });
-
-export default connect(mapStateToProps, actions)(ChannelsContainer);
+export default ChannelsContainer;

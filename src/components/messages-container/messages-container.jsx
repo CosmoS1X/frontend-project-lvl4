@@ -1,9 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { connect, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Spinner } from 'react-bootstrap';
 
-import * as actions from '../../actions';
 import Message from '../message';
 import ChatForm from '../chat-form';
 
@@ -12,30 +11,32 @@ const getCurrentChannel = (channels, currentChannelId) => {
     return '';
   }
 
-  const [current] = channels.filter(({ id }) => id === currentChannelId);
-  return current.name;
+  const currentChannel = channels.find(({ id }) => id === currentChannelId);
+  return currentChannel.name;
 };
 
 const renderMessages = (messages, currentChannelId) => messages
   .filter(({ channelId }) => channelId === currentChannelId)
-  .map(({
-    id,
-    user,
-    message,
-    date,
-  }) => (
-    <Message key={id} user={user} message={message} date={date} />
+  .map(({ id, user, message }) => (
+    <Message key={id} user={user} message={message} />
   ));
 
-const MessagesContainer = ({
-  channels,
-  messages,
-  currentChannelId,
-  loading,
-}) => {
+const MessagesContainer = () => {
   const { t } = useTranslation();
-  const count = useSelector((state) => state.messages
-    .filter(({ channelId }) => channelId === currentChannelId).length);
+  const {
+    channels,
+    messages,
+    currentChannelId,
+    loading,
+  } = useSelector(({ channelsState, messagesState, loadingState }) => ({
+    channels: channelsState.channels,
+    messages: messagesState.messages,
+    currentChannelId: channelsState.currentChannelId,
+    loading: loadingState.loading,
+  }));
+
+  const count = messages
+    .filter(({ channelId }) => channelId === currentChannelId).length;
 
   return (
     <div className="col p-0 h-100">
@@ -63,16 +64,4 @@ const MessagesContainer = ({
   );
 };
 
-const mapStateToProps = ({
-  channels,
-  currentChannelId,
-  messages,
-  loading,
-}) => ({
-  channels,
-  currentChannelId,
-  messages,
-  loading,
-});
-
-export default connect(mapStateToProps, actions)(MessagesContainer);
+export default MessagesContainer;

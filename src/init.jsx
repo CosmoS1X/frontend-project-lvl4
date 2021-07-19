@@ -7,8 +7,7 @@ import 'bootstrap';
 
 import App from './components/app';
 import ErrorBoundary from './components/error-boundary';
-import reducer from './reducers';
-import * as actions from './actions';
+import reducer, { actions } from './reducers';
 import i18n from './i18n';
 import '../assets/application.scss';
 
