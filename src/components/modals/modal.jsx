@@ -1,13 +1,14 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { actions } from '../../reducers';
+import Add from './add.jsx';
 import Remove from './remove.jsx';
-import AddRename from './add-rename.jsx';
+import Rename from './rename.jsx';
 
 const modals = {
-  add: AddRename,
+  add: Add,
   remove: Remove,
-  rename: AddRename,
+  rename: Rename,
 };
 
 const Modal = ({ modalShown }) => {

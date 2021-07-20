@@ -1,26 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useSocket } from '../../hooks';
+import { actions } from '../../reducers';
 
-const AddRename = ({ modalShown: { modalName, id }, onHide }) => {
+const Add = ({ onHide }) => {
   const inputRef = useRef();
   const [submitting, setSubmitting] = useState(false);
   const socketApi = useSocket();
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const channels = useSelector(({ channelsState }) => channelsState.channels);
-  const currentChannel = channels.find((channel) => channel.id === id);
-
-  const modalActions = {
-    add: socketApi.createChannel,
-    rename: socketApi.renameChannel,
-  };
 
   const formik = useFormik({
-    initialValues: { name: currentChannel?.name || '' },
+    initialValues: { name: '' },
     validationSchema: Yup.object({
       name: Yup.string()
         .required(t('errors.required'))
@@ -30,19 +26,20 @@ const AddRename = ({ modalShown: { modalName, id }, onHide }) => {
     validateOnBlur: false,
     onSubmit: async (values) => {
       setSubmitting(true);
-      await modalActions[modalName]({ ...values, id });
+      const response = await socketApi.createChannel(values);
+      dispatch(actions.changeChannel(response.id));
       onHide();
     },
   });
 
   useEffect(() => {
-    inputRef.current.select();
+    inputRef.current.focus();
   }, []);
 
   return (
     <Modal show onHide={onHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>{t(`modals.${modalName}`)}</Modal.Title>
+        <Modal.Title>{t('modals.add')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -51,7 +48,7 @@ const AddRename = ({ modalShown: { modalName, id }, onHide }) => {
             <Form.Control
               className="mb-2"
               name="name"
-              data-testid={`${modalName}-channel`}
+              data-testid="add-channel"
               onChange={formik.handleChange}
               value={formik.values.name}
               ref={inputRef}
@@ -71,4 +68,4 @@ const AddRename = ({ modalShown: { modalName, id }, onHide }) => {
   );
 };
 
-export default AddRename;
+export default Add;

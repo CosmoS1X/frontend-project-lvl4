@@ -2,18 +2,12 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { Spinner } from 'react-bootstrap';
-
 import Message from '../message';
 import ChatForm from '../chat-form';
 
-const getCurrentChannel = (channels, currentChannelId) => {
-  if (channels.length === 0) {
-    return '';
-  }
-
-  const currentChannel = channels.find(({ id }) => id === currentChannelId);
-  return currentChannel.name;
-};
+const getCurrentChannel = (channels, currentChannelId) => (
+  channels.find(({ id }) => id === currentChannelId)?.name
+);
 
 const renderMessages = (messages, currentChannelId) => messages
   .filter(({ channelId }) => channelId === currentChannelId)

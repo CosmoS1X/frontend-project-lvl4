@@ -1,14 +1,15 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import { I18nextProvider } from 'react-i18next';
+import i18n from 'i18next';
+import { initReactI18next, I18nextProvider } from 'react-i18next';
 import Rollbar from 'rollbar';
 import 'bootstrap';
 
 import App from './components/app';
 import ErrorBoundary from './components/error-boundary';
 import reducer, { actions } from './reducers';
-import i18n from './i18n';
+import resources from './locales/index.js';
 import '../assets/application.scss';
 
 const production = process.env.NODE_ENV === 'production';
@@ -24,7 +25,17 @@ const rollbar = new Rollbar({
   captureUnhandledRejections: true,
 });
 
-const init = (socket) => {
+const init = async (socket) => {
+  const i18nInstance = i18n.createInstance();
+  await i18nInstance.use(initReactI18next).init({
+    lng: 'ru',
+    fallbackLng: 'ru',
+    interpolation: {
+      escapeValue: false,
+    },
+    resources,
+  });
+
   const store = configureStore({
     reducer,
   });
@@ -37,8 +48,15 @@ const init = (socket) => {
       removeChannel: 'Channel removing status:',
     };
 
-    return socket.volatile.emit(actionName, data, (res) => {
-      console.log(messages[actionName], res.status);
+    return new Promise((resolve, reject) => {
+      socket.volatile.emit(actionName, data, (response) => {
+        console.log(messages[actionName], response.status);
+        if (response.status === 'ok') {
+          resolve(response.data);
+        } else {
+          reject();
+        }
+      });
     });
   };
 
@@ -67,7 +85,7 @@ const init = (socket) => {
   return (
     <Provider store={store}>
       <ErrorBoundary rollbar={rollbar}>
-        <I18nextProvider i18n={i18n}>
+        <I18nextProvider i18n={i18nInstance}>
           <App socketApi={socketApi} />
         </I18nextProvider>
       </ErrorBoundary>
