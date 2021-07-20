@@ -15,7 +15,7 @@ const ChatForm = () => {
 
   useEffect(() => {
     inputRef.current.focus();
-  }, []);
+  }, [currentChannelId]);
 
   const formik = useFormik({
     initialValues: { body: '' },

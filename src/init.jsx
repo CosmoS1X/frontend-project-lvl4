@@ -54,7 +54,7 @@ const init = (socket) => {
     store.dispatch(actions.updateMessages(data));
   });
   socket.on('newChannel', (data) => {
-    store.dispatch(actions.addChannel(data));
+    store.dispatch(actions.createChannel(data));
   });
   socket.on('renameChannel', (data) => {
     store.dispatch(actions.renameChannel(data));
