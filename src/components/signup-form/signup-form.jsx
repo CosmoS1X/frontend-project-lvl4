@@ -13,6 +13,7 @@ const SignupForm = () => {
   const auth = useAuth();
   const history = useHistory();
   const [signupFailed, setSignupFailed] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     inputRef.current.focus();
@@ -37,12 +38,14 @@ const SignupForm = () => {
     onSubmit: async ({ username, password }) => {
       setSignupFailed(false);
       try {
+        setSubmitting(true);
         await auth.getToken(routes.signupPath(), { username, password });
         auth.logIn();
         history.push(routes.mainPage());
       } catch (err) {
         if (err.isAxiosError && err.response.status === 409) {
           setSignupFailed(true);
+          setSubmitting(false);
           return;
         }
         throw err;
@@ -103,7 +106,7 @@ const SignupForm = () => {
         {formik.errors.confirmPassword ? <div className="invalid-tooltip">{formik.errors.confirmPassword}</div> : null}
         {signupFailed ? <div className="invalid-tooltip">{t('errors.userExists')}</div> : null}
       </Form.Group>
-      <Button className="w-100" type="submit" variant="outline-primary">
+      <Button disabled={submitting} className="w-100" type="submit" variant="outline-primary">
         {t('registrationButton')}
       </Button>
     </Form>

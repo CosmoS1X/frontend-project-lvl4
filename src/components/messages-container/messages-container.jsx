@@ -4,6 +4,9 @@ import { useSelector } from 'react-redux';
 import { animateScroll } from 'react-scroll';
 import Message from '../message';
 import ChatForm from '../chat-form';
+import {
+  getAllChannels, getAllMessages, getMessagesCountForCurrentChannel, getCurrentChannelId,
+} from '../../selectors.js';
 
 const getCurrentChannel = (channels, currentChannelId) => (
   channels.find(({ id }) => id === currentChannelId)?.name
@@ -17,23 +20,15 @@ const renderMessages = (messages, currentChannelId) => messages
 
 const MessagesContainer = () => {
   const { t } = useTranslation();
-  const {
-    channels,
-    messages,
-    currentChannelId,
-    loading,
-  } = useSelector(({ channelsState, messagesState }) => ({
-    channels: channelsState.channels,
-    messages: messagesState.messages,
-    currentChannelId: channelsState.currentChannelId,
-  }));
 
-  const count = messages
-    .filter(({ channelId }) => channelId === currentChannelId).length;
+  const channels = useSelector(getAllChannels);
+  const messages = useSelector(getAllMessages);
+  const currentChannelId = useSelector(getCurrentChannelId);
+  const messagesCount = useSelector(getMessagesCountForCurrentChannel);
 
   useEffect(() => {
     animateScroll.scrollToBottom({ containerId: 'messages-box', delay: 0, duration: 0 });
-  }, [loading, currentChannelId, messages]);
+  }, [currentChannelId, messages]);
 
   return (
     <div className="col p-0 h-100">
@@ -47,7 +42,7 @@ const MessagesContainer = () => {
             </b>
           </p>
           <span className="text-muted">
-            {t('message', { count })}
+            {t('message', { count: messagesCount })}
           </span>
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5">

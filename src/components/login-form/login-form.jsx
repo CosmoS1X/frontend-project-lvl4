@@ -12,6 +12,7 @@ const LoginForm = () => {
   const auth = useAuth();
   const history = useHistory();
   const [authFailed, setAuthFailed] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     inputRef.current.focus();
@@ -25,12 +26,14 @@ const LoginForm = () => {
     onSubmit: async (values) => {
       setAuthFailed(false);
       try {
+        setSubmitting(true);
         await auth.getToken(routes.loginPath(), values);
         auth.logIn();
         history.push(routes.mainPage());
       } catch (err) {
         if (err.isAxiosError && err.response.status === 401) {
           setAuthFailed(true);
+          setSubmitting(false);
           return;
         }
         throw err;
@@ -71,7 +74,7 @@ const LoginForm = () => {
         <Form.Label htmlFor="password">{t('password')}</Form.Label>
         {authFailed ? <div className="invalid-tooltip">{t('errors.authFailed')}</div> : null}
       </Form.Group>
-      <Button className="w-100 mb-3" type="submit" variant="outline-primary">{t('login')}</Button>
+      <Button disabled={submitting} className="w-100 mb-3" type="submit" variant="outline-primary">{t('login')}</Button>
     </Form>
   );
 };

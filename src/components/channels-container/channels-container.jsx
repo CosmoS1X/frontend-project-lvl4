@@ -3,14 +3,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Channel from '../channel';
 import { actions } from '../../slices';
+import { getAllChannels, getCurrentChannelId } from '../../selectors';
 
 const ChannelsContainer = ({ onShowAddModal }) => {
   const { t } = useTranslation();
-  const { channels, currentChannelId } = useSelector(({ channelsState }) => ({
-    channels: channelsState.channels,
-    currentChannelId: channelsState.currentChannelId,
-  }));
   const dispatch = useDispatch();
+
+  const channels = useSelector(getAllChannels);
+  const currentChannelId = useSelector(getCurrentChannelId);
 
   const renderChannel = ({ id, name, removable }) => (
     <Channel

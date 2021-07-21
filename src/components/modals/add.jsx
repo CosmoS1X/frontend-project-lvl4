@@ -6,6 +6,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useSocket } from '../../hooks';
 import { actions } from '../../slices';
+import { getAllChannels } from '../../selectors';
 
 const Add = ({ onHide }) => {
   const inputRef = useRef();
@@ -13,7 +14,8 @@ const Add = ({ onHide }) => {
   const socketApi = useSocket();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const channels = useSelector(({ channelsState }) => channelsState.channels);
+
+  const channels = useSelector(getAllChannels);
 
   const formik = useFormik({
     initialValues: { name: '' },

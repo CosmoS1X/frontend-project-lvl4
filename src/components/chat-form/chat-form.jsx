@@ -3,15 +3,15 @@ import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useAuth, useSocket } from '../../hooks';
+import { getCurrentChannelId } from '../../selectors';
 
 const ChatForm = () => {
   const { t } = useTranslation();
   const inputRef = useRef();
   const auth = useAuth();
   const socket = useSocket();
-  const { currentChannelId } = useSelector(({ channelsState }) => ({
-    currentChannelId: channelsState.currentChannelId,
-  }));
+
+  const currentChannelId = useSelector(getCurrentChannelId);
 
   useEffect(() => {
     inputRef.current.focus();
