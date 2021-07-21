@@ -22,9 +22,9 @@ const MainPage = () => {
         try {
           setLoading(true);
           const { data: { channels, messages } } = await auth.getData(userData.token);
+          setLoading(false);
           dispatch(actions.initChannels(channels));
           dispatch(actions.initMessages(messages));
-          setLoading(false);
         } catch (err) {
           if (err.isAxiosError && err.response.status === 401) {
             auth.logOut();
