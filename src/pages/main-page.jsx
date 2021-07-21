@@ -12,7 +12,7 @@ const MainPage = () => {
   const history = useHistory();
   const auth = useAuth();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,6 +20,7 @@ const MainPage = () => {
 
       if (userData && userData.token) {
         try {
+          setLoading(true);
           const { data: { channels, messages } } = await auth.getData(userData.token);
           dispatch(actions.initChannels(channels));
           dispatch(actions.initMessages(messages));
@@ -44,7 +45,6 @@ const MainPage = () => {
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
       <div className="row h-100 bg-white flex-md-row">
-        {loading ? <LoadingIndicator /> : null}
         <ChannelsContainer onShowAddModal={() => dispatch(actions.showModal({ type: 'add', extraData: null }))} />
         <MessagesContainer />
       </div>
