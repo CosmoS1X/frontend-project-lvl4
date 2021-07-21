@@ -1,8 +1,9 @@
-// @ts-check
-
 const path = require('path');
+const webpack = require('webpack');
+const dotenv = require('dotenv');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const Dotenv = require('dotenv-webpack');
+
+dotenv.config();
 
 const mode = process.env.NODE_ENV || 'development';
 
@@ -25,7 +26,9 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin(),
-    new Dotenv(),
+    new webpack.DefinePlugin({
+      'process.env.ROLLBAR_ACCESS_TOKEN': JSON.stringify(process.env.ROLLBAR_ACCESS_TOKEN),
+    }),
   ],
   module: {
     rules: [
