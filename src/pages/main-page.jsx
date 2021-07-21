@@ -12,17 +12,20 @@ const MainPage = () => {
   const history = useHistory();
   const auth = useAuth();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // eslint-disable-next-line functional/no-let
+    let mounted = true;
     const fetchData = async () => {
       const userData = auth.getUserData();
 
       if (userData && userData.token) {
         try {
-          setLoading(true);
           const { data: { channels, messages } } = await auth.getData(userData.token);
-          setLoading(false);
+          if (mounted) {
+            setLoading(false);
+          }
           dispatch(actions.initChannels(channels));
           dispatch(actions.initMessages(messages));
         } catch (err) {
@@ -36,6 +39,10 @@ const MainPage = () => {
     };
 
     fetchData();
+
+    return () => {
+      mounted = false;
+    };
   }, [auth, dispatch, history]);
 
   if (loading) {
