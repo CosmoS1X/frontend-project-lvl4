@@ -12,7 +12,7 @@ const MainPage = () => {
   const history = useHistory();
   const auth = useAuth();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,7 +20,6 @@ const MainPage = () => {
 
       if (userData && userData.token) {
         try {
-          setLoading(true);
           const { data: { channels, messages } } = await auth.getData(userData.token);
           dispatch(actions.initChannels(channels));
           dispatch(actions.initMessages(messages));
@@ -36,7 +35,7 @@ const MainPage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [auth, dispatch, history]);
 
   if (loading) {
     return <LoadingIndicator />;
