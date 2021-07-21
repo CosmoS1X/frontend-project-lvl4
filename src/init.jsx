@@ -51,8 +51,14 @@ const init = async (socket) => {
     };
 
     return new Promise((resolve, reject) => {
+      const timer = setTimeout(() => {
+        reject();
+      }, 3000);
+
       socket.volatile.emit(actionName, data, (response) => {
         console.log(messages[actionName], response.status);
+        clearTimeout(timer);
+
         if (response.status === 'ok') {
           resolve(response.data);
         } else {

@@ -36,7 +36,7 @@ const MainPage = () => {
     };
 
     fetchData();
-  }, [auth, dispatch, history]);
+  }, []);
 
   if (loading) {
     return <LoadingIndicator />;
