@@ -8,7 +8,9 @@ import 'bootstrap';
 
 import App from './components/app';
 import ErrorBoundary from './components/error-boundary';
-import reducer, { actions } from './reducers';
+import { AuthProvider } from './auth/index.jsx';
+import { socketContext } from './contexts';
+import reducer, { actions } from './slices';
 import resources from './locales/index.js';
 import '../assets/application.scss';
 
@@ -86,7 +88,11 @@ const init = async (socket) => {
     <Provider store={store}>
       <ErrorBoundary rollbar={rollbar}>
         <I18nextProvider i18n={i18nInstance}>
-          <App socketApi={socketApi} />
+          <socketContext.Provider value={socketApi}>
+            <AuthProvider>
+              <App />
+            </AuthProvider>
+          </socketContext.Provider>
         </I18nextProvider>
       </ErrorBoundary>
     </Provider>

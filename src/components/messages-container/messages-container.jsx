@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { Spinner } from 'react-bootstrap';
+import { animateScroll } from 'react-scroll';
 import Message from '../message';
 import ChatForm from '../chat-form';
 
@@ -22,15 +22,18 @@ const MessagesContainer = () => {
     messages,
     currentChannelId,
     loading,
-  } = useSelector(({ channelsState, messagesState, loadingState }) => ({
+  } = useSelector(({ channelsState, messagesState }) => ({
     channels: channelsState.channels,
     messages: messagesState.messages,
     currentChannelId: channelsState.currentChannelId,
-    loading: loadingState.loading,
   }));
 
   const count = messages
     .filter(({ channelId }) => channelId === currentChannelId).length;
+
+  useEffect(() => {
+    animateScroll.scrollToBottom({ containerId: 'messages-box', delay: 0, duration: 0 });
+  }, [loading, currentChannelId, messages]);
 
   return (
     <div className="col p-0 h-100">
@@ -48,7 +51,7 @@ const MessagesContainer = () => {
           </span>
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5">
-          {loading ? <Spinner animation="border" variant="primary" /> : renderMessages(messages, currentChannelId)}
+          {renderMessages(messages, currentChannelId)}
         </div>
         <div className="mt-auto px-5 py-3">
           <ChatForm />

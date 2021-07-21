@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useSocket } from '../../hooks';
-import { actions } from '../../reducers';
+import { actions } from '../../slices';
 
 const Add = ({ onHide }) => {
   const inputRef = useRef();
@@ -27,7 +27,7 @@ const Add = ({ onHide }) => {
     onSubmit: async (values) => {
       setSubmitting(true);
       const response = await socketApi.createChannel(values);
-      dispatch(actions.changeChannel(response.id));
+      dispatch(actions.setActiveChannel(response.id));
       onHide();
     },
   });

@@ -5,14 +5,10 @@ import { channelsActions } from './channelsState.js';
 const slice = createSlice({
   name: 'messages',
   initialState: {
-    currentUser: null,
     messages: [],
   },
   reducers: {
-    setUser: (state, { payload }) => {
-      state.currentUser = payload;
-    },
-    getMessages: (state, { payload }) => {
+    initMessages: (state, { payload }) => {
       state.messages = payload;
     },
     updateMessages: (state, { payload }) => {

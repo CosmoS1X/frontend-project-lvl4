@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { actions } from '../../reducers';
+import { actions } from '../../slices';
 
 const Channel = ({
   id, name, removable, currentChannel, onChangeChannel,
@@ -12,8 +12,8 @@ const Channel = ({
   const dispatch = useDispatch();
   const buttonVariant = id === currentChannel ? 'secondary' : 'light';
 
-  const handleShowModal = (modalName) => {
-    dispatch(actions.showModal({ modalName, id }));
+  const handleShowModal = (type) => {
+    dispatch(actions.showModal({ type, extraData: { channelId: id } }));
     buttonRef.current.blur();
   };
 

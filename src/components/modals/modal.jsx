@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { actions } from '../../reducers';
+import { actions } from '../../slices';
 import Add from './add.jsx';
 import Remove from './remove.jsx';
 import Rename from './rename.jsx';
@@ -11,19 +11,19 @@ const modals = {
   rename: Rename,
 };
 
-const Modal = ({ modalShown }) => {
-  const { modalName } = modalShown;
+const Modal = ({ modalState }) => {
+  const { shown, type } = modalState;
   const dispatch = useDispatch();
 
-  if (!modalName) {
+  if (!shown) {
     return null;
   }
 
-  const Component = modals[modalName];
+  const Component = modals[type];
   return (
     <Component
-      modalShown={modalShown}
-      onHide={() => dispatch(actions.closeModal({ modalName: 'remove', id: null }))}
+      modalState={modalState}
+      onHide={() => dispatch(actions.closeModal())}
     />
   );
 };

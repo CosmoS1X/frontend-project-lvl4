@@ -2,14 +2,14 @@ import React, { useRef, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { useSocket } from '../../hooks';
+import { useAuth, useSocket } from '../../hooks';
 
 const ChatForm = () => {
   const { t } = useTranslation();
   const inputRef = useRef();
+  const auth = useAuth();
   const socket = useSocket();
-  const { currentUser, currentChannelId } = useSelector(({ messagesState, channelsState }) => ({
-    currentUser: messagesState.currentUser,
+  const { currentChannelId } = useSelector(({ channelsState }) => ({
     currentChannelId: channelsState.currentChannelId,
   }));
 
@@ -21,7 +21,7 @@ const ChatForm = () => {
     initialValues: { body: '' },
     onSubmit: async ({ body }) => {
       const message = {
-        user: currentUser,
+        user: auth.getUserData().username,
         message: body,
         channelId: currentChannelId,
       };

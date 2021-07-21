@@ -6,13 +6,13 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useSocket } from '../../hooks';
 
-const Rename = ({ modalShown: { id }, onHide }) => {
+const Rename = ({ modalState: { extraData: { channelId } }, onHide }) => {
   const inputRef = useRef();
   const [submitting, setSubmitting] = useState(false);
   const socketApi = useSocket();
   const { t } = useTranslation();
   const channels = useSelector(({ channelsState }) => channelsState.channels);
-  const currentChannel = channels.find((channel) => channel.id === id);
+  const currentChannel = channels.find((channel) => channel.id === channelId);
 
   const formik = useFormik({
     initialValues: { name: currentChannel.name },
@@ -25,7 +25,7 @@ const Rename = ({ modalShown: { id }, onHide }) => {
     validateOnBlur: false,
     onSubmit: async (values) => {
       setSubmitting(true);
-      await socketApi.renameChannel({ ...values, id });
+      await socketApi.renameChannel({ ...values, id: channelId });
       onHide();
     },
   });

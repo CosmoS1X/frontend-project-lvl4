@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Channel from '../channel';
-import { actions } from '../../reducers';
+import { actions } from '../../slices';
 
 const ChannelsContainer = ({ onShowAddModal }) => {
   const { t } = useTranslation();
@@ -19,7 +19,7 @@ const ChannelsContainer = ({ onShowAddModal }) => {
       name={name}
       removable={removable}
       currentChannel={currentChannelId}
-      onChangeChannel={() => dispatch(actions.changeChannel(id))}
+      onChangeChannel={() => dispatch(actions.setActiveChannel(id))}
     />
   );
 
