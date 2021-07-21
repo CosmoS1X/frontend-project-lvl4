@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import axios from 'axios';
 import LoadingIndicator from '../components/loading-indicator';
 import ChannelsContainer from '../components/channels-container';
 import MessagesContainer from '../components/messages-container';
@@ -22,12 +23,14 @@ const MainPage = () => {
 
       if (userData && userData.token) {
         try {
-          const { data: { channels, messages } } = await auth.getData(userData.token);
+          const { data } = await axios.get(routes.usersPath(), {
+            headers: auth.getAuthHeader(userData.token),
+          });
           if (mounted) {
             setLoading(false);
           }
-          dispatch(actions.initChannels(channels));
-          dispatch(actions.initMessages(messages));
+          dispatch(actions.initChannels(data?.channels));
+          dispatch(actions.initMessages(data?.messages));
         } catch (err) {
           if (err.isAxiosError && err.response.status === 401) {
             auth.logOut();
@@ -52,7 +55,9 @@ const MainPage = () => {
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
       <div className="row h-100 bg-white flex-md-row">
-        <ChannelsContainer onShowAddModal={() => dispatch(actions.showModal({ type: 'add', extraData: null }))} />
+        <ChannelsContainer
+          onShowAddModal={() => dispatch(actions.showModal({ type: 'add', extraData: null }))}
+        />
         <MessagesContainer />
       </div>
     </div>

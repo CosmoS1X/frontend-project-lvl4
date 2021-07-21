@@ -1,8 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import axios from 'axios';
-import routes from '../routes';
-import { authContext } from '../contexts';
+import routes from './routes';
+import { authContext } from './contexts';
 
 export const AuthProvider = ({ children }) => {
   const userData = JSON.parse(localStorage.getItem('userData'));
@@ -18,10 +18,8 @@ export const AuthProvider = ({ children }) => {
     const response = await axios.post(route, data);
     localStorage.setItem('userData', JSON.stringify(response.data));
   };
-  const getData = async (token) => {
-    const data = await axios.get(routes.usersPath(), { headers: { Authorization: `Bearer ${token}` } });
-    return data;
-  };
+  const getAuthHeader = (token) => ({ Authorization: `Bearer ${token}` });
+
   const getUserData = () => JSON.parse(localStorage.getItem('userData'));
 
   const value = {
@@ -29,7 +27,7 @@ export const AuthProvider = ({ children }) => {
     logIn,
     logOut,
     getToken,
-    getData,
+    getAuthHeader,
     getUserData,
   };
 

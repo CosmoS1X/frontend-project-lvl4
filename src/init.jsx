@@ -8,7 +8,7 @@ import 'bootstrap';
 
 import App from './components/app';
 import ErrorBoundary from './components/error-boundary';
-import { AuthProvider } from './auth/index.jsx';
+import { AuthProvider } from './auth.jsx';
 import { socketContext } from './contexts';
 import reducer, { actions } from './slices';
 import resources from './locales/index.js';
@@ -51,15 +51,23 @@ const init = async (socket) => {
     };
 
     return new Promise((resolve, reject) => {
+      // eslint-disable-next-line functional/no-let
+      let state = 'pending';
       const timer = setTimeout(() => {
+        state = 'timed_out';
         reject();
       }, 3000);
 
       socket.volatile.emit(actionName, data, (response) => {
         console.log(messages[actionName], response.status);
+        if (state !== 'pending') {
+          return;
+        }
+
         clearTimeout(timer);
 
         if (response.status === 'ok') {
+          state = 'resolved';
           resolve(response.data);
         } else {
           reject();

@@ -8,7 +8,7 @@ const removeChannel = async (socketApi, id, onHide) => {
   onHide();
 };
 
-const Remove = ({ modalState: { extraData: { channelId } }, onHide }) => {
+const Remove = ({ modalState: { extraData }, onHide }) => {
   const socketApi = useSocket();
   const { t } = useTranslation();
 
@@ -22,7 +22,7 @@ const Remove = ({ modalState: { extraData: { channelId } }, onHide }) => {
         <p className="lead">{t('confirmDeletion')}</p>
         <div className="d-flex justify-content-end">
           <Button variant="secondary" className="me-2" onClick={onHide}>{t('buttons.cancel')}</Button>
-          <Button variant="danger" onClick={() => removeChannel(socketApi, { id: channelId }, onHide)}>{t('buttons.delete')}</Button>
+          <Button variant="danger" onClick={() => removeChannel(socketApi, { id: extraData.channelId }, onHide)}>{t('buttons.delete')}</Button>
         </div>
       </Modal.Body>
     </Modal>

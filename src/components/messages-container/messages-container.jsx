@@ -5,30 +5,23 @@ import { animateScroll } from 'react-scroll';
 import Message from '../message';
 import ChatForm from '../chat-form';
 import {
-  getAllChannels, getAllMessages, getMessagesCountForCurrentChannel, getCurrentChannelId,
+  getMessagesCountForCurrentChannel,
+  getCurrentChannelId,
+  getCurrentChannelName,
+  getMessagesforCurrentChannel,
 } from '../../selectors.js';
-
-const getCurrentChannel = (channels, currentChannelId) => (
-  channels.find(({ id }) => id === currentChannelId)?.name
-);
-
-const renderMessages = (messages, currentChannelId) => messages
-  .filter(({ channelId }) => channelId === currentChannelId)
-  .map(({ id, user, message }) => (
-    <Message key={id} user={user} message={message} />
-  ));
 
 const MessagesContainer = () => {
   const { t } = useTranslation();
 
-  const channels = useSelector(getAllChannels);
-  const messages = useSelector(getAllMessages);
   const currentChannelId = useSelector(getCurrentChannelId);
+  const currentChannelName = useSelector(getCurrentChannelName);
+  const currenChannelMessages = useSelector(getMessagesforCurrentChannel);
   const messagesCount = useSelector(getMessagesCountForCurrentChannel);
 
   useEffect(() => {
     animateScroll.scrollToBottom({ containerId: 'messages-box', delay: 0, duration: 0 });
-  }, [currentChannelId, messages]);
+  }, [currentChannelId, currenChannelMessages]);
 
   return (
     <div className="col p-0 h-100">
@@ -38,7 +31,7 @@ const MessagesContainer = () => {
             <b>
               #
               {' '}
-              {getCurrentChannel(channels, currentChannelId)}
+              {currentChannelName}
             </b>
           </p>
           <span className="text-muted">
@@ -46,7 +39,9 @@ const MessagesContainer = () => {
           </span>
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5">
-          {renderMessages(messages, currentChannelId)}
+          {currenChannelMessages.map(({ id, user, message }) => (
+            <Message key={id} user={user} message={message} />
+          ))}
         </div>
         <div className="mt-auto px-5 py-3">
           <ChatForm />

@@ -9,7 +9,7 @@ import {
 import Header from '../header';
 import Modal from '../modals/modal.jsx';
 import routes from '../../routes.js';
-import { PrivateRoute } from '../../auth/index.jsx';
+import { PrivateRoute } from '../../auth.jsx';
 import { getModalState } from '../../selectors';
 
 const App = () => {
