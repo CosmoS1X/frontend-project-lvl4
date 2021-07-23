@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import axios from 'axios';
 import routes from './routes';
 import { authContext } from './contexts';
 
@@ -9,15 +8,16 @@ export const AuthProvider = ({ children }) => {
   const hasToken = userData && userData.token;
   const [loggedIn, setLoggedIn] = useState(hasToken);
 
-  const logIn = () => setLoggedIn(true);
+  const logIn = (data) => {
+    localStorage.setItem('userData', JSON.stringify(data));
+    setLoggedIn(true);
+  };
+
   const logOut = () => {
     localStorage.removeItem('userData');
     setLoggedIn(false);
   };
-  const getToken = async (route, data) => {
-    const response = await axios.post(route, data);
-    localStorage.setItem('userData', JSON.stringify(response.data));
-  };
+
   const getAuthHeader = (token) => ({ Authorization: `Bearer ${token}` });
 
   const getUserData = () => JSON.parse(localStorage.getItem('userData'));
@@ -26,7 +26,6 @@ export const AuthProvider = ({ children }) => {
     loggedIn,
     logIn,
     logOut,
-    getToken,
     getAuthHeader,
     getUserData,
   };

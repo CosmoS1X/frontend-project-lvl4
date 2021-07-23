@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 import routes from '../../routes.js';
 import { useAuth } from '../../hooks';
 
@@ -11,6 +12,7 @@ const LoginForm = () => {
   const inputRef = useRef();
   const auth = useAuth();
   const history = useHistory();
+  const location = useLocation();
   const [authFailed, setAuthFailed] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -27,9 +29,10 @@ const LoginForm = () => {
       setAuthFailed(false);
       try {
         setSubmitting(true);
-        await auth.getToken(routes.loginPath(), values);
-        auth.logIn();
-        history.push(routes.mainPage());
+        const response = await axios.post(routes.loginPath(), values);
+        auth.logIn(response.data);
+        const { from } = location.state || { from: { pathname: routes.mainPage() } };
+        history.replace(from);
       } catch (err) {
         if (err.isAxiosError && err.response.status === 401) {
           setAuthFailed(true);

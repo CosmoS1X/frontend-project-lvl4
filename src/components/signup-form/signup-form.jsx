@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
+import axios from 'axios';
 import routes from '../../routes.js';
 import { useAuth } from '../../hooks';
 
@@ -39,8 +40,8 @@ const SignupForm = () => {
       setSignupFailed(false);
       try {
         setSubmitting(true);
-        await auth.getToken(routes.signupPath(), { username, password });
-        auth.logIn();
+        const response = await axios.post(routes.signupPath(), { username, password });
+        auth.logIn(response.data);
         history.push(routes.mainPage());
       } catch (err) {
         if (err.isAxiosError && err.response.status === 409) {

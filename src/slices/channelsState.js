@@ -20,8 +20,8 @@ const slice = createSlice({
       state.channels.push(payload);
     },
     renameChannel: (state, { payload }) => {
-      const index = state.channels.findIndex((item) => item.id === payload.id);
-      state.channels.splice(index, 1, payload);
+      const channelToRename = state.channels.find((item) => item.id === payload.id);
+      channelToRename.name = payload.name;
     },
     removeChannel: (state, { payload: { id } }) => {
       state.channels = state.channels.filter((item) => item.id !== id);

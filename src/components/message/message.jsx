@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Message = ({ user, message }) => (
-  <div>
+  <div className="text-break mb-2">
     <b>{user}</b>
     {': '}
     {message}

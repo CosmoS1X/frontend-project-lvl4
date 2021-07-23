@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useSocket } from '../../hooks';
-import { getAllChannels, getCurrentChannel } from '../../selectors';
+import { getAllChannels } from '../../selectors';
 
 const Rename = ({ modalState: { extraData }, onHide }) => {
   const inputRef = useRef();
@@ -13,20 +13,21 @@ const Rename = ({ modalState: { extraData }, onHide }) => {
   const socketApi = useSocket();
   const { t } = useTranslation();
   const channels = useSelector(getAllChannels);
-  const currentChannel = useSelector(getCurrentChannel);
+  const channelToRename = channels.find((item) => item.id === extraData.channelId);
 
   const formik = useFormik({
-    initialValues: { name: currentChannel.name },
+    initialValues: { name: channelToRename.name },
     validationSchema: Yup.object({
       name: Yup.string()
         .required(t('errors.required'))
+        .trim()
         .notOneOf(channels.map((i) => i.name), t('errors.alreadyExists')),
     }),
     validateOnChange: false,
     validateOnBlur: false,
-    onSubmit: async (values) => {
+    onSubmit: async ({ name }) => {
       setSubmitting(true);
-      await socketApi.renameChannel({ ...values, id: extraData.channelId });
+      await socketApi.renameChannel({ name: name.trim(), id: extraData.channelId });
       onHide();
     },
   });

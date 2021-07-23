@@ -22,13 +22,14 @@ const Add = ({ onHide }) => {
     validationSchema: Yup.object({
       name: Yup.string()
         .required(t('errors.required'))
+        .trim()
         .notOneOf(channels.map((i) => i.name), t('errors.alreadyExists')),
     }),
     validateOnChange: false,
     validateOnBlur: false,
-    onSubmit: async (values) => {
+    onSubmit: async ({ name }) => {
       setSubmitting(true);
-      const response = await socketApi.createChannel(values);
+      const response = await socketApi.createChannel({ name: name.trim() });
       dispatch(actions.setActiveChannel(response.id));
       onHide();
     },
